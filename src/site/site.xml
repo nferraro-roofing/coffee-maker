@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Coffee Maker"
+    xmlns="http://maven.apache.org/DECORATION/1.6.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/DECORATION/1.6.0 http://maven.apache.org/xsd/decoration-1.6.0.xsd">
+    
+    <skin>
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-fluido-skin</artifactId>
+        <version>1.10.0</version>
+    </skin>
+
+    <publishDate position="right" />
+    <version position="right" />    
+    <poweredBy>
+        <logo name="nferraro-roofing"
+            href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            img="joe_cinder.png" />
+    </poweredBy>
+
+    <body>
+        <breadcrumbs>
+            <item name="GitHub" href="https://github.com/nferraro-roofing/coffee-maker" />
+        </breadcrumbs>
+    
+        <menu ref="reports" /> <!-- customize index.md to describe inspiration and general info -->
+
+        <menu name="Usage">
+            <item name="Usage" href="usage.html" />       <!-- How to plug into this jar, env variables etc -->
+        </menu>
+
+        <menu name="Archtecture and Design">
+            <item name="Package Overview" href="package-overview.html" />
+            <item name="Core Concepts" href="core-concepts.html" />       <!-- How the coffee maker works - clock, components, etc -->
+            <item name="Logging" href="logging.html" />       <!-- How the coffee maker works - clock, components, etc -->
+            <item name="Future Improvements" href="future-improvements.html" />
+        </menu>
+    </body>
+</project>
