@@ -1,0 +1,1 @@
+Simple cofee maker implementation
