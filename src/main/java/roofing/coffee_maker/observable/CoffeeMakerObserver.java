@@ -1,6 +1,6 @@
-package com.roofing.coffee_maker.observable;
+package roofing.coffee_maker.observable;
 
-import com.roofing.coffee_maker.CoffeeMaker;
+import roofing.coffee_maker.CoffeeMaker;
 
 public interface CoffeeMakerObserver {
 

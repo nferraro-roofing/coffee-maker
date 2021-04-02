@@ -1,10 +1,10 @@
-package com.roofing.coffee_maker.impl;
+package roofing.coffee_maker.impl;
 
-import com.roofing.coffee_maker.BoilerState;
-import com.roofing.coffee_maker.BrewButtonState;
-import com.roofing.coffee_maker.CoffeeMaker;
-import com.roofing.coffee_maker.ReliefValveState;
-import com.roofing.coffee_maker.WarmerPlateState;
+import roofing.coffee_maker.BoilerState;
+import roofing.coffee_maker.BrewButtonState;
+import roofing.coffee_maker.CoffeeMaker;
+import roofing.coffee_maker.ReliefValveState;
+import roofing.coffee_maker.WarmerPlateState;
 
 public class InMemoryCoffeeMaker implements CoffeeMaker {
 

@@ -1,4 +1,4 @@
-package com.roofing.coffee_maker;
+package roofing.coffee_maker;
 
 /**
  * Boiler states provided in the problem statement.

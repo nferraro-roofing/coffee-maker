@@ -1,4 +1,4 @@
-package com.roofing.coffee_maker;
+package roofing.coffee_maker;
 
 /**
  * Hardware API defined in the problem statement.

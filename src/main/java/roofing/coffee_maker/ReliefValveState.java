@@ -1,4 +1,4 @@
-package com.roofing.coffee_maker;
+package roofing.coffee_maker;
 
 /**
  * Relief valve states provided in the problem statement.

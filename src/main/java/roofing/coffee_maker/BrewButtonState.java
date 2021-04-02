@@ -1,4 +1,4 @@
-package com.roofing.coffee_maker;
+package roofing.coffee_maker;
 
 /**
  * Brew button (indicator) states provided in the problem statement.
