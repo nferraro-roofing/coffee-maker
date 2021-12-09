@@ -14,6 +14,8 @@ public interface CoffeeMaker {
 
   WarmerPlate.State getWarmerPlateState();
 
+  ReliefValve.State getReliefValveState();
+
   void setBoilerState(BoilerPlate.State newState);
 
   void setBrewButtonState(BrewButton.State newState);

@@ -1,5 +1,7 @@
 package roofing.coffee.maker.component;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -18,13 +20,13 @@ import java.util.function.Consumer;
  */
 public class EventBus<T> {
 
-  private final List<Consumer<T>> callbacks; 
+  private final List<Consumer<T>> callbacks = ArrayList<>();
 
-  public EventBus(List<Consumer<T>> callbacks) {
-    this.callbacks = callbacks;
+  public void subscribe(Consumer<T> callback) {
+    this.callbacks.add(callback);
   }
 
-  void publish(T event) {
+  public void publish(T event) {
     for (Consumer<T> c: callbacks) {
       c.accept(event);
     }
