@@ -1,11 +1,13 @@
 Simple cofee maker implementation
 
 # TODO
+* Remove .app folder. This isn't an app - it's a domain for a coffee-maker
+* Bootstrap with a CoffeeMaker creator
+* Use a clock to sync things
+* Tests
 * Check scope of methods. some could / should be package protected
-* Fix formatting
-    * https://code.visualstudio.com/docs/java/java-linting
-* Format javadoc and view how it actually turns out  
-* .md plugin
+* Sonar lint stuff
+* Format javadoc and view how it actually turns out
 * maven enforcer rules?
 
 ### The Mark IV Special Coffee Maker [Problem statement - taken from Uncle Bob's [article] (http://objectmentor.com/resources/articles/CoffeeMaker.pdf)]

@@ -8,19 +8,19 @@ package roofing.coffee.maker.component;
  */
 public interface CoffeeMaker {
 
-  BoilerPlate.State getBoilerPlateState();
+    BoilerPlate.State getBoilerPlateState();
 
-  BrewButton.State getBrewButtonState();
+    BrewButton.State getBrewButtonState();
 
-  WarmerPlate.State getWarmerPlateState();
+    WarmerPlate.State getWarmerPlateState();
 
-  ReliefValve.State getReliefValveState();
+    ReliefValve.State getReliefValveState();
 
-  void setBoilerState(BoilerPlate.State newState);
+    void setBoilerState(BoilerPlate.State newState);
 
-  void setBrewButtonState(BrewButton.State newState);
+    void setBrewButtonState(BrewButton.State newState);
 
-  void setReliefValveState(ReliefValve.State newState);
+    void setReliefValveState(ReliefValve.State newState);
 
-  void setWarmerState(WarmerPlate.State newState);
+    void setWarmerState(WarmerPlate.State newState);
 }
