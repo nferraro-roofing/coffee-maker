@@ -37,15 +37,14 @@ The code for the hardware interface functions written by hardware engineers can 
 Additional logic I can implement:
     Validations on external components (12 cups of water)
     Boiler sensor could be re-tooled as a reservoir, and drain at a given rate when the coffee is brewing
-
 Internal components ------------------------------------------------
 
     Boiler (heats the WATER) - on or off
-        When brew button is pressed & boiler sensor is boilerNotEmpty, turn on
+        When brew button is pressed & water level is NotEmpty, turn on
         else off
         
     Warmer plate (heats the COFFEE in the pot) - on or off
-        When potNotEmpty or warmerEmpty & brew button is pressed , then ON
+        When potNotEmpty, then ON
         else OFF
 
     Pressure relief valve - open or closed
@@ -54,13 +53,14 @@ Internal components ------------------------------------------------
 
 External components (user / time sets these) -----------------------
 
-    Water reservoir* - boilerEmpty or boilerNotEmpty
+    Water level* - empty or notempty
         Determined based only on user input
         * renamed from boiler sensor in the problem statement
     
-    Warmer plate sensor - warmerEmpty, potEmpty, potNotEmpty
+    Coffee pot state* - warmerEmpty, potEmpty, potNotEmpty
         Determined based only on user input
+        * renamed from Warmer plate sensor
     
-    Brew button - not pressed, pressed, indicator light on (coffee ready)
+    Brew button - not pressed, pressed, icoffee ready
         Determined based only on user input
             
