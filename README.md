@@ -7,7 +7,7 @@ Simple coffee maker implementation
 * Sonar lint stuff
 * Tests
 * Javadoc / Readme
-** Goal is implement a coffee maker as described below. Ultimately, we just want CoffeeReady and WarmerPlateOn / off in a sane way
+** The true issue with  this whole thing is that the problem is very contrived. It doesn't encapsulate any useful logic - it's all for its own sake.
 ** Boiler, WarmerPlate, and PressureRefliefValve look the same, but no reason to make an interface because we treat each one explicitly - i.e. no room for polymorphism
 ** Components can know only of sensors - not each other. This assists in decoupling the components
 * Format javadoc and view how it actually turns out
