@@ -1,14 +1,18 @@
-Simple cofee maker implementation
+Simple coffee maker implementation
 
-# TODO
-* Remove .app folder. This isn't an app - it's a domain for a coffee-maker
-* Bootstrap with a CoffeeMaker creator
-* Use a clock to sync things
-* Tests
-* Check scope of methods. some could / should be package protected
+# TODO - coffee maker proper
+* Coffee maker creator
+* Actually implement the business logic
+* Check scope of methods / packaging.
 * Sonar lint stuff
+* Tests
+* Javadoc / Readme
+** Goal is implement a coffee maker as described below. Ultimately, we just want CoffeeReady and WarmerPlateOn / off in a sane way
+** Boiler, WarmerPlate, and PressureRefliefValve look the same, but no reason to make an interface because we treat each one explicitly - i.e. no room for polymorphism
+** Components can know only of sensors - not each other. This assists in decoupling the components
 * Format javadoc and view how it actually turns out
 * maven enforcer rules?
+* Lombok?
 
 ### The Mark IV Special Coffee Maker [Problem statement - taken from Uncle Bob's [article] (http://objectmentor.com/resources/articles/CoffeeMaker.pdf)]
 
@@ -28,3 +32,35 @@ The hardware for the Mark IV has been designed and is currently under developmen
 
 The code for the hardware interface functions written by hardware engineers can be found at:
   [Hardware API](https://github.com/anuchandy/coffeemaker/tree/master/hardwareAPI)
+  
+### Logic in a nutshell
+Additional logic I can implement:
+    Validations on external components (12 cups of water)
+    Boiler sensor could be re-tooled as a reservoir, and drain at a given rate when the coffee is brewing
+
+Internal components ------------------------------------------------
+
+    Boiler (heats the WATER) - on or off
+        When brew button is pressed & boiler sensor is boilerNotEmpty, turn on
+        else off
+        
+    Warmer plate (heats the COFFEE in the pot) - on or off
+        When potNotEmpty or warmerEmpty & brew button is pressed , then ON
+        else OFF
+
+    Pressure relief valve - open or closed
+        When warmerEmpty & boiler on then closed
+        Else open
+
+External components (user / time sets these) -----------------------
+
+    Water reservoir* - boilerEmpty or boilerNotEmpty
+        Determined based only on user input
+        * renamed from boiler sensor in the problem statement
+    
+    Warmer plate sensor - warmerEmpty, potEmpty, potNotEmpty
+        Determined based only on user input
+    
+    Brew button - not pressed, pressed, indicator light on (coffee ready)
+        Determined based only on user input
+            
