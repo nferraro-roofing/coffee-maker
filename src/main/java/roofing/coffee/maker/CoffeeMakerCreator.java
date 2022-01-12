@@ -1,32 +1,33 @@
 package roofing.coffee.maker;
 
+import roofing.coffee.maker.clocks.Clock;
+
+/**
+ * A creator of CoffeeMaker instances.
+ * 
+ * CoffeeMakerCreator purposefully does not provide a default constructor. Doing so forces clients
+ * of this package to consider the ramifications of different Clocks. Clock speed and behavior which
+ * is non-trivial consideration and can affect the performance and correctness of a CoffeeMaker
+ * client.
+ * 
+ * @author nferraro-roofing
+ *
+ */
 public class CoffeeMakerCreator {
+
+    private final Clock clock;
+
+    /**
+     * Create a CoffeeMakerCreator that will synchronize the CoffeeMaker's components with the
+     * provided Clock instance.
+     * 
+     * @param clock
+     */
+    public CoffeeMakerCreator(Clock clock) {
+        this.clock = clock;
+    }
 
     public CoffeeMaker create() {
 
-        Bus<Boiler.State> boilerPlateBus = new Bus<>();
-        Bus<WaterLevel.State> brewButtonBus = new Bus<>();
-        Bus<WarmerPlate.State> warmerPlateBus = new Bus<>();
-        Bus<PressureReliefValve.State> refliefValveBus = new Bus<>();
-
-        CoffeeMaker coffeeMaker = new InMemoryCoffeeMaker(
-                boilerPlateBus,
-                brewButtonBus,
-                warmerPlateBus,
-                refliefValveBus);
-
-        Boiler boilerPlate = new Boiler(coffeeMaker);
-        boilerPlateBus.subscribe(boilerPlate::accept);
-
-        WaterLevel brewButton = new WaterLevel(coffeeMaker);
-        brewButtonBus.subscribe(brewButton::accept);
-
-        WarmerPlate warmerPlate = new WarmerPlate(coffeeMaker);
-        warmerPlateBus.subscribe(warmerPlate::accept);
-
-        PressureReliefValve refliefValve = new PressureReliefValve(coffeeMaker);
-        refliefValveBus.subscribe(refliefValve::accept);
-
-        return coffeeMaker;
     }
 }

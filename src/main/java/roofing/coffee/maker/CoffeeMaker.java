@@ -1,54 +1,21 @@
 package roofing.coffee.maker;
 
-public class CoffeeMaker {
+public interface CoffeeMaker {
 
-    private WaterLevel currWaterLevel;
-    private CoffeePotState currPotState;
-    private BrewButtonState currButtonState;
+    void fill(int cupsOfwater);
 
-    private final Bus bus;
+    void pressBrewButton();
 
-    public CoffeeMaker(Bus bus) {
-        this.bus = bus;
-    }
+    int cupsOfWater();
 
-    public void fillWaterReservoir() {
+    int cupsOfCoffee();
 
-    }
+    boolean isWarmerPlateOn();
 
-    public void emptyWaterReservoir() {
+    boolean isBrewComplete();
 
-    }
+    void removePot();
 
-    public void removePot() {
+    void replacePot();
 
-    }
-
-    public void replacePot() {
-
-    }
-
-    public void pressBrewButton() {
-
-    }
-
-    public void isCoffeeReady() {
-
-    }
-
-    public void isWarmerPlateOn() {
-
-    }
-
-    WaterLevel getCurrWaterLevel() {
-        return currWaterLevel;
-    }
-
-    CoffeePotState getCurrPotState() {
-        return currPotState;
-    }
-
-    BrewButtonState getCurrButtonState() {
-        return currButtonState;
-    }
 }

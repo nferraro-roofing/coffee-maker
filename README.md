@@ -3,13 +3,12 @@ Simple coffee maker implementation
 # TODO - coffee maker proper
 * Coffee maker creator
 * Actually implement the business logic
+* Clock & Clock builder
 * Check scope of methods / packaging.
 * Sonar lint stuff
 * Tests
 * Javadoc / Readme
-** The true issue with  this whole thing is that the problem is very contrived. It doesn't encapsulate any useful logic - it's all for its own sake.
-** Boiler, WarmerPlate, and PressureRefliefValve look the same, but no reason to make an interface because we treat each one explicitly - i.e. no room for polymorphism
-** Components can know only of sensors - not each other. This assists in decoupling the components
+** The true issue with  this whole thing is that the problem is very contrived. It doesn't encapsulate any useful logic - it's all for its own sake. So I changed the problem statement a bit
 * Format javadoc and view how it actually turns out
 * maven enforcer rules?
 * Lombok?
@@ -26,12 +25,17 @@ The Mark IV Special makes up to 12 cups of coffee at a time. The user places a f
 * The Brew button. This momentary button starts the brewing cycle. It has an indicator that lights up when the brewing cycle is over and the coffee is ready.
 * A pressure-relief valve that opens to reduce the pressure in the boiler. The drop in pressure stops the flow of water to the filter. The value can be opened or closed.
 
-The hardware for the Mark IV has been designed and is currently under development. The hardware engineers have even provided a low-level API for us to use, so we don't have to write any bit- twiddling I/O driver code.
 
-### The hardware API
-
-The code for the hardware interface functions written by hardware engineers can be found at:
-  [Hardware API](https://github.com/anuchandy/coffeemaker/tree/master/hardwareAPI)
+https://flylib.com/books/en/4.444.1.119/1/
+The hardware for the Mark IV has been designed and is currently under development. The hardware engineers have even provided a low-level API for us to use, so we don't have to write any bit- twiddling I/O driver code 
+* CoffeeMakerAPI
+* WarmerPlateStatus
+* BoilerStatus
+* BrewButtonStatus
+* BoilerState
+* WarmerState
+* IndicatorState
+* ReliefValveState
   
 ### Logic in a nutshell
 Additional logic I can implement:
@@ -61,6 +65,7 @@ External components (user / time sets these) -----------------------
         Determined based only on user input
         * renamed from Warmer plate sensor
     
-    Brew button - not pressed, pressed, icoffee ready
-        Determined based only on user input
+    Brew button - not pressed, pressed, coffee ready
+        When user presses this, status is pressed
+        When 
             
