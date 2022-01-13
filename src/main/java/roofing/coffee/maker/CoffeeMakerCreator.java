@@ -1,6 +1,10 @@
 package roofing.coffee.maker;
 
 import roofing.coffee.maker.clocks.Clock;
+import roofing.coffee.maker.components.BrewButton;
+import roofing.coffee.maker.components.CoffeePot;
+import roofing.coffee.maker.components.WarmerPlate;
+import roofing.coffee.maker.components.WaterReservoir;
 
 /**
  * A creator of CoffeeMaker instances.
@@ -28,6 +32,13 @@ public class CoffeeMakerCreator {
     }
 
     public CoffeeMaker create() {
+        WaterReservoir reservoir = new WaterReservoir();
+        BrewButton button = new BrewButton();
+        CoffeePot pot = new CoffeePot();
+        WarmerPlate warmer = new WarmerPlate();
 
+        clock.synchonize(reservoir, button, pot, warmer);
+
+        return new CoffeeMaker(reservoir, button, pot, warmer);
     }
 }

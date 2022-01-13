@@ -1,21 +1,54 @@
 package roofing.coffee.maker;
 
-public interface CoffeeMaker {
+import roofing.coffee.maker.components.BrewButton;
+import roofing.coffee.maker.components.CoffeePot;
+import roofing.coffee.maker.components.WarmerPlate;
+import roofing.coffee.maker.components.WaterReservoir;
 
-    void fill(int cupsOfwater);
+public class CoffeeMaker {
 
-    void pressBrewButton();
+    private final WaterReservoir reservoir;
+    private final BrewButton button;
+    private final CoffeePot pot;
+    private final WarmerPlate warmer;
 
-    int cupsOfWater();
+    CoffeeMaker(WaterReservoir reservoir, BrewButton button, CoffeePot pot, WarmerPlate warmer) {
+        this.reservoir = reservoir;
+        this.button = button;
+        this.pot = pot;
+        this.warmer = warmer;
+    }
 
-    int cupsOfCoffee();
+    public void fill(int cupsOfwater) {
+        reservoir.fill(cupsOfwater);
+    }
 
-    boolean isWarmerPlateOn();
+    public void pressBrewButton() {
+        button.pressBrewButton();
+    }
 
-    boolean isBrewComplete();
+    public int cupsOfWater() {
+        return reservoir.cupsOfWater();
+    }
 
-    void removePot();
+    public int cupsOfCoffee() {
+        return pot.cupsOfCoffee();
+    }
 
-    void replacePot();
+    public boolean isWarmerPlateOn() {
+        return warmer.isHot();
+    }
 
+    public boolean isBrewComplete() {
+        return reservoir.isBrewing();
+    }
+
+    public CoffeePot removePot() {
+        warmer.removePot();
+        return pot;
+    }
+
+    public void replacePot() {
+        warmer.replacePot();
+    }
 }

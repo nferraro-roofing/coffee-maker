@@ -8,21 +8,17 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import roofing.coffee.maker.components.ClockedComponent;
 
-class AutomaticClock implements Clock {
+public class AutomaticClock implements Clock {
 
     // We expect four ClockedComponents: CoffeeMakerUI, CoffeePot, WarmerPlate, and WaterReservoir
     private final List<ClockedComponent> synchedComponents = new ArrayList<>(4);
 
-    private final long tickRate;
-    private final TimeUnit tickRateUnit;
     private final ScheduledExecutorService svc;
 
     private boolean synched = false;
 
-    AutomaticClock(long tickRate, TimeUnit tickRateUnit) {
+    public AutomaticClock() {
         svc = Executors.newScheduledThreadPool(1);
-        this.tickRate = tickRate;
-        this.tickRateUnit = tickRateUnit;
     }
 
     @Override
@@ -30,7 +26,7 @@ class AutomaticClock implements Clock {
         synchedComponents.addAll(Arrays.asList(newComponents));
 
         if (!synched) {
-            svc.scheduleAtFixedRate(this::tick, 0, tickRate, tickRateUnit);
+            svc.scheduleAtFixedRate(this::tick, 0, 1, TimeUnit.SECONDS);
             synched = true;
         }
     }

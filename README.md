@@ -1,9 +1,9 @@
 Simple coffee maker implementation
 
 # TODO - coffee maker proper
-* Coffee maker creator
+* Clock should not be public
+* How to hide internals via package protected? All in one package??
 * Actually implement the business logic
-* Clock & Clock builder
 * Check scope of methods / packaging.
 * Sonar lint stuff
 * Tests
@@ -12,6 +12,14 @@ Simple coffee maker implementation
 * Format javadoc and view how it actually turns out
 * maven enforcer rules?
 * Lombok?
+
+# Improvements I want to make:
+* Use of modules via java9 - https://www.oracle.com/corporate/features/understanding-java-9-modules.html
+** This would allow me to export only CoffeeMaker rather than everything, while also allowing me to organize my packages in a readable, discoverable manner
+** I would export CoffeeMaker, CoffeeMakerCreator, and BrewButton only
+** Update AutomaticClock to rely on a system setting rather than hard-coded value
+* Maybe I should not start ticking the AutomaticClock as soon as I synchronize it
+* BrewButton internal state could probably use booleans instead of an enum
 
 ### The Mark IV Special Coffee Maker [Problem statement - taken from Uncle Bob's [article] (http://objectmentor.com/resources/articles/CoffeeMaker.pdf)]
 
