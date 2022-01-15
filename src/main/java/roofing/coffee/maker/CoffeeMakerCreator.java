@@ -1,7 +1,7 @@
 package roofing.coffee.maker;
 
-import roofing.coffee.maker.busses.Clock;
 import roofing.coffee.maker.busses.Bus;
+import roofing.coffee.maker.busses.Clock;
 import roofing.coffee.maker.components.BrewButton;
 import roofing.coffee.maker.components.CoffeePot;
 import roofing.coffee.maker.components.WarmerPlate;
@@ -18,9 +18,11 @@ import roofing.coffee.maker.components.WaterReservoir;
  * @author nferraro-roofing
  *
  */
-public class CoffeeMakerCreator {
+public final class CoffeeMakerCreator {
 
-    public CoffeeMaker create(boolean autoUpdateBus) {
+    private CoffeeMakerCreator() { /* Disable construction */ }
+
+    public static final CoffeeMaker create(boolean autoUpdateBus) {
         WaterReservoir reservoir = new WaterReservoir();
         BrewButton button = new BrewButton();
         CoffeePot pot = new CoffeePot();
