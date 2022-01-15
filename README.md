@@ -6,9 +6,14 @@ Simple coffee maker implementation
 * Actually implement the business logic
 * Check scope of methods / packaging.
 * Sonar lint stuff
+* Order methods by visbility
 * Tests
+** Does order of operations matter at all?
+** What happens if I input two things to the coffee maker before it ticks?
+** Init a coffee maker with a state - e.g. WarmerPlate.hasPot(), WaterReservoir.cupsOfWater(), etc
 * Javadoc / Readme
 ** The true issue with  this whole thing is that the problem is very contrived. It doesn't encapsulate any useful logic - it's all for its own sake. So I changed the problem statement a bit
+** The low-memory, anit-GC approach with the BusMessage, builder, and BusComponent
 * Format javadoc and view how it actually turns out
 * maven enforcer rules?
 * Lombok?
@@ -20,6 +25,11 @@ Simple coffee maker implementation
 ** Update AutomaticClock to rely on a system setting rather than hard-coded value
 * Maybe I should not start ticking the AutomaticClock as soon as I synchronize it
 * BrewButton internal state could probably use booleans instead of an enum
+* BrewButton rate of water loss per tick should be tunable.
+** Based on a setting
+** Setting should set a rate based on time; WaterReservoir should be aware of clock tick rate so it can remove water at the right rate no matter the clock
+* Thread-safety in BusMessageBuilder
+* CoffeePot max capacity should be an app setting
 
 ### The Mark IV Special Coffee Maker [Problem statement - taken from Uncle Bob's [article] (http://objectmentor.com/resources/articles/CoffeeMaker.pdf)]
 

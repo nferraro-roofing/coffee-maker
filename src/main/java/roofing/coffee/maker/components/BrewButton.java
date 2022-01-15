@@ -1,14 +1,33 @@
 package roofing.coffee.maker.components;
 
-public class BrewButton implements ClockedComponent {
+import roofing.coffee.maker.busses.BusComponent;
+import roofing.coffee.maker.busses.BusMessage;
 
-    private final WaterReservoir reservoir;
-
-    public BrewButton(WaterReservoir reservoir) {
-        this.reservoir = reservoir;
-    }
+public class BrewButton implements BusComponent<BrewButton> {
 
     private BrewRequestState brewState = BrewRequestState.NOT_REQUESTED;
+
+    public BrewButton() {}
+
+    @Override
+    public void readBusMessage(BusMessage message) {
+        if (brewState == BrewRequestState.REQUESTED && message.getReservoir().isBrewing()) {
+            brewState = BrewRequestState.RECEIVED;
+
+        } else if (brewState == BrewRequestState.RECEIVED) {
+            brewState = BrewRequestState.NOT_REQUESTED;
+        }
+    }
+
+    @Override
+    public void refreshFrom(BrewButton other) {
+        this.brewState = other.state();
+    }
+
+    @Override
+    public void reset() {
+        this.brewState = BrewRequestState.NOT_REQUESTED;
+    }
 
     public void pressBrewButton() {
         // If we are idle, request for brewing.
@@ -18,14 +37,12 @@ public class BrewButton implements ClockedComponent {
                 : BrewRequestState.NOT_REQUESTED;
     }
 
-    @Override
-    public void update() {
-        if (brewState == BrewRequestState.REQUESTED && reservoir.isBrewing()) {
-            brewState = BrewRequestState.RECEIVED;
-            
-        } else if (brewState == BrewRequestState.RECEIVED) {
-            brewState = BrewRequestState.NOT_REQUESTED;
-        }
+    public boolean isBrewRequested() {
+        return brewState != BrewRequestState.NOT_REQUESTED;
+    }
+
+    protected BrewRequestState state() {
+        return brewState;
     }
 
     private enum BrewRequestState {

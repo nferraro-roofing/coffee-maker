@@ -1,27 +1,47 @@
 package roofing.coffee.maker.components;
 
-public class WarmerPlate implements ClockedComponent {
+import roofing.coffee.maker.busses.BusComponent;
+import roofing.coffee.maker.busses.BusMessage;
 
-    public void removePot() {
+public class WarmerPlate implements BusComponent<WarmerPlate> {
 
-    }
+    private boolean hasPot = true;
+    private boolean isHot = false;
 
-    public void replacePot() {
+    public WarmerPlate() {}
 
-    }
-
-    public boolean isHot() {
-        return false;
-    }
-
-    public boolean hasPot() {
-        return false;
+    @Override
+    public void readBusMessage(BusMessage message) {
+        // No need to check if the pot is actually there. The WaterReservoir
+        // should not brew coffee if the pot is not present!
+        isHot = message.getReservoir().isBrewing();
     }
 
     @Override
-    public void update() {
-        // TODO Auto-generated method stub
-
+    public void refreshFrom(WarmerPlate other) {
+        this.hasPot = other.hasPot();
+        this.isHot = other.isHot();
     }
 
+    @Override
+    public void reset() {
+        this.hasPot = true;
+        this.isHot = false;
+    }
+
+    public void removePot() {
+        hasPot = false;
+    }
+
+    public void replacePot() {
+        hasPot = true;
+    }
+
+    public boolean isHot() {
+        return isHot;
+    }
+
+    public boolean hasPot() {
+        return hasPot;
+    }
 }

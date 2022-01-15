@@ -1,6 +1,7 @@
 package roofing.coffee.maker;
 
-import roofing.coffee.maker.clocks.Clock;
+import roofing.coffee.maker.busses.Clock;
+import roofing.coffee.maker.busses.Bus;
 import roofing.coffee.maker.components.BrewButton;
 import roofing.coffee.maker.components.CoffeePot;
 import roofing.coffee.maker.components.WarmerPlate;
@@ -19,26 +20,18 @@ import roofing.coffee.maker.components.WaterReservoir;
  */
 public class CoffeeMakerCreator {
 
-    private final Clock clock;
-
-    /**
-     * Create a CoffeeMakerCreator that will synchronize the CoffeeMaker's components with the
-     * provided Clock instance.
-     * 
-     * @param clock
-     */
-    public CoffeeMakerCreator(Clock clock) {
-        this.clock = clock;
-    }
-
-    public CoffeeMaker create() {
+    public CoffeeMaker create(boolean autoUpdateBus) {
         WaterReservoir reservoir = new WaterReservoir();
         BrewButton button = new BrewButton();
         CoffeePot pot = new CoffeePot();
         WarmerPlate warmer = new WarmerPlate();
 
-        clock.synchonize(reservoir, button, pot, warmer);
+        Bus bus = new Bus(reservoir, button, pot, warmer);
 
-        return new CoffeeMaker(reservoir, button, pot, warmer);
+        if (autoUpdateBus) {
+            Clock.start(bus);
+        }
+
+        return new CoffeeMaker(bus, reservoir, button, pot, warmer);
     }
 }
