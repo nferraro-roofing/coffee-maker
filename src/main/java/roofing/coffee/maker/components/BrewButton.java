@@ -7,8 +7,6 @@ public class BrewButton implements BusComponent<BrewButton> {
 
     private BrewRequestState brewState = BrewRequestState.NOT_REQUESTED;
 
-    public BrewButton() {}
-
     @Override
     public void readBusMessage(BusMessage message) {
         if (brewState == BrewRequestState.REQUESTED && message.getReservoir().isBrewing()) {
@@ -41,7 +39,7 @@ public class BrewButton implements BusComponent<BrewButton> {
         return brewState != BrewRequestState.NOT_REQUESTED;
     }
 
-    protected BrewRequestState state() {
+    private BrewRequestState state() {
         return brewState;
     }
 

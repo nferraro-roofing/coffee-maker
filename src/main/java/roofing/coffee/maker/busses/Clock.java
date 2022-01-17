@@ -15,11 +15,11 @@ public class Clock {
         return clock;
     }
 
-    private Clock(Bus bus) {
+    Clock(Bus bus) {
         this.bus = bus;
     }
 
-    public void tick() {
+    private void tick() {
         bus.update();
 
         if (!isTicking) {

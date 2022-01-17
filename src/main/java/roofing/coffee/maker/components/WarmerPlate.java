@@ -8,8 +8,6 @@ public class WarmerPlate implements BusComponent<WarmerPlate> {
     private boolean hasPot = true;
     private boolean isHot = false;
 
-    public WarmerPlate() {}
-
     @Override
     public void readBusMessage(BusMessage message) {
         // No need to check if the pot is actually there. The WaterReservoir

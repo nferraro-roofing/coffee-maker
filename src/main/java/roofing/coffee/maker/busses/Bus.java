@@ -13,7 +13,7 @@ public class Bus {
 
     private Queue<BusMessage> messages = new LinkedList<>();
 
-    public Bus(BusComponent<?>... components) {
+    public void synchBusComponents(BusComponent<?>... components) {
         synchedComponents.addAll(Arrays.asList(components));
     }
 
@@ -26,6 +26,8 @@ public class Bus {
             for (BusComponent<?> c : synchedComponents) {
                 c.readBusMessage(message);
             }
+
+            messages.remove(message);
         }
     }
 }

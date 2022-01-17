@@ -5,6 +5,14 @@ import roofing.coffee.maker.components.CoffeePot;
 import roofing.coffee.maker.components.WarmerPlate;
 import roofing.coffee.maker.components.WaterReservoir;
 
+/**
+ * Please do NOT override equals and hashcode unless we also update bus. We very much intend for
+ * equals() to check instance vs instance. For this reason, we have explicitly overriden equals and
+ * hashcode but merely call the super class - Object
+ * 
+ * @author nferraro-roofing
+ *
+ */
 public class BusMessage {
 
     private static final BusMessageBuilder BUILDER = new BusMessageBuilder();
@@ -29,6 +37,15 @@ public class BusMessage {
         this.warmer = warmer;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 
     public WaterReservoir getReservoir() {
         return reservoir;

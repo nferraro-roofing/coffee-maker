@@ -6,11 +6,10 @@ import roofing.coffee.maker.busses.BusMessage;
 public class CoffeePot implements BusComponent<CoffeePot> {
 
     // TODO: app setting
-    private static final int MAX_CAPACITY_CUPS = 12;
+    // public in order to enable tests to spy into this value
+    public static final int MAX_CAPACITY_CUPS = 12;
 
     private int cupsOfCoffee = 0;
-
-    public CoffeePot() {}
 
     @Override
     public void readBusMessage(BusMessage message) {

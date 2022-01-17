@@ -1,16 +1,11 @@
 Simple coffee maker implementation
 
 # TODO - coffee maker proper
-* Clock should not be public
-* How to hide internals via package protected? All in one package??
-* Actually implement the business logic
-* Check scope of methods / packaging.
-* Sonar lint stuff
-* Order methods by visbility
 * Tests
 ** Does order of operations matter at all?
 ** What happens if I input two things to the coffee maker before it ticks?
 ** Init a coffee maker with a state - e.g. WarmerPlate.hasPot(), WaterReservoir.cupsOfWater(), etc
+** Use @TestFactory to create a random set of inputs for a coffee maker?
 * Javadoc / Readme
 ** The true issue with  this whole thing is that the problem is very contrived. It doesn't encapsulate any useful logic - it's all for its own sake. So I changed the problem statement a bit
 ** The low-memory, anit-GC approach with the BusMessage, builder, and BusComponent
@@ -22,14 +17,20 @@ Simple coffee maker implementation
 * Use of modules via java9 - https://www.oracle.com/corporate/features/understanding-java-9-modules.html
 ** This would allow me to export only CoffeeMaker rather than everything, while also allowing me to organize my packages in a readable, discoverable manner
 ** I would export CoffeeMaker, CoffeeMakerCreator, and BrewButton only
-** Update AutomaticClock to rely on a system setting rather than hard-coded value
-* Maybe I should not start ticking the AutomaticClock as soon as I synchronize it
+** I would also make CoffeeMaker::currentState visible only within the roofing.coffee.maker.* package if that's possible
+** I could solve all of this by ploping everything into once package. This isn't a bad idea, but I like very small packages
 * BrewButton internal state could probably use booleans instead of an enum
 * BrewButton rate of water loss per tick should be tunable.
 ** Based on a setting
 ** Setting should set a rate based on time; WaterReservoir should be aware of clock tick rate so it can remove water at the right rate no matter the clock
+* CoffeePot max capacity should be an app setting. This would also enable me to set it during test time rather than making the value itself public. I really don't like that it's public
 * Thread-safety in BusMessageBuilder
 * CoffeePot max capacity should be an app setting
+
+# Key difficulties I had
+* Making the thing unit-testable given the asynch ticking nature of the clock
+* Decoupling the concepts of snapshotting state of the components after user input vs just always using the current state
+** Even if I do not actually snapshot the current state in my final solution, still write about this challenge and why I came to this conclusion
 
 ### The Mark IV Special Coffee Maker [Problem statement - taken from Uncle Bob's [article] (http://objectmentor.com/resources/articles/CoffeeMaker.pdf)]
 

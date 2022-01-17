@@ -15,8 +15,6 @@ public class WaterReservoir implements BusComponent<WaterReservoir> {
     private int cupsOfWater = 0;
     private boolean isBrewing = false;
 
-    public WaterReservoir() {}
-
     @Override
     public void readBusMessage(BusMessage message) {
         isBrewing = message.getButton().isBrewRequested()
@@ -55,10 +53,11 @@ public class WaterReservoir implements BusComponent<WaterReservoir> {
     }
 
     public boolean isEmpty() {
-        return cupsOfWater > 0;
+        // This really should never go negative, but it doesn't hurt to check!
+        return cupsOfWater <= 0;
     }
 
-    protected int brewRate() {
+    int brewRate() {
         return BREW_RATE;
     }
 }

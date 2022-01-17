@@ -22,17 +22,20 @@ public final class CoffeeMakerCreator {
 
     private CoffeeMakerCreator() { /* Disable construction */ }
 
-    public static final CoffeeMaker create(boolean autoUpdateBus) {
+    public static final CoffeeMaker create() {
+        Bus bus = new Bus();
+        CoffeeMaker ret = create(bus);
+        Clock.start(bus);
+        return ret;
+    }
+
+    static final CoffeeMaker create(Bus bus) {
         WaterReservoir reservoir = new WaterReservoir();
         BrewButton button = new BrewButton();
         CoffeePot pot = new CoffeePot();
         WarmerPlate warmer = new WarmerPlate();
 
-        Bus bus = new Bus(reservoir, button, pot, warmer);
-
-        if (autoUpdateBus) {
-            Clock.start(bus);
-        }
+        bus.synchBusComponents(reservoir, button, pot, warmer);
 
         return new CoffeeMaker(bus, reservoir, button, pot, warmer);
     }

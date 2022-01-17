@@ -1,10 +1,17 @@
 package roofing.coffee.maker.busses;
 
-public interface BusComponent<TypeRefreshibleFrom> {
+/**
+ * T is "Type Refresh-able From"
+ * 
+ * @author nferraro-roofing
+ *
+ * @param <T>
+ */
+public interface BusComponent<T> {
 
     void readBusMessage(BusMessage message);
 
-    void refreshFrom(TypeRefreshibleFrom from);
+    void refreshFrom(T from);
 
     void reset();
 }
