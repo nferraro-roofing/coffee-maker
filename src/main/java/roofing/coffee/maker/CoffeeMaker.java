@@ -29,12 +29,10 @@ public class CoffeeMaker {
 
     public void fill(int cupsOfwater) {
         reservoir.fill(cupsOfwater);
-        snapshotCurrentState(); // Important enqueue AFTER we change state
     }
 
     public void pressBrewButton() {
         button.pressBrewButton();
-        snapshotCurrentState(); // Important enqueue AFTER we change state
     }
 
     public int cupsOfWater() {
@@ -55,21 +53,19 @@ public class CoffeeMaker {
 
     public CoffeePot removePot() {
         warmer.removePot();
-        snapshotCurrentState(); // Important enqueue AFTER we change state
         return pot;
     }
 
     public void replacePot() {
         warmer.replacePot();
-        snapshotCurrentState(); // Important enqueue AFTER we change state
     }
 
-    private void snapshotCurrentState() {
-        bus.enqueue(BusMessage.builder()
+    public BusMessage asBusMessage() {
+        return BusMessage.builder()
                 .withBrewButton(button)
                 .withCoffeePot(pot)
                 .withWarmerPlate(warmer)
                 .withWaterReservoir(reservoir)
-                .build());
+                .build();
     }
 }

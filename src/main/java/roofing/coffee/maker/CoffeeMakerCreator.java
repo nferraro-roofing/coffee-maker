@@ -23,20 +23,23 @@ public final class CoffeeMakerCreator {
     private CoffeeMakerCreator() { /* Disable construction */ }
 
     public static final CoffeeMaker create() {
-        Bus bus = new Bus();
-        CoffeeMaker ret = create(bus);
-        Clock.start(bus);
-        return ret;
+        ClockBuidler clockBuilder = Clock.builder();
+        CoffeeMaker coffeeMaker = create(clockBuilder);
+        clockBuilder.build().start();
+        return coffeeMaker;
     }
 
-    static final CoffeeMaker create(Bus bus) {
+    static final CoffeeMaker create(ClockBuilder clockBuilder) {
         WaterReservoir reservoir = new WaterReservoir();
         BrewButton button = new BrewButton();
         CoffeePot pot = new CoffeePot();
         WarmerPlate warmer = new WarmerPlate();
 
-        bus.synchBusComponents(reservoir, button, pot, warmer);
+        Bus bus = new Bus(reservoir, button, pot, warmer);
+        CoffeeMaker coffeeMaker = new CoffeeMaker(bus, reservoir, button, pot, warmer);
 
-        return new CoffeeMaker(bus, reservoir, button, pot, warmer);
+        clockBuilder.withBus(bus).withCoffeMaker();
+
+        return coffeeMaker;
     }
 }

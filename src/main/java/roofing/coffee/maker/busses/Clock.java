@@ -2,31 +2,24 @@ package roofing.coffee.maker.busses;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import roofing.coffee.maker.CoffeeMaker;
 
 public class Clock {
 
     private final Bus bus;
+    private final CoffeeMaker coffeeMaker;
 
-    private boolean isTicking = false;
-
-    public static Clock start(Bus bus) {
-        Clock clock = new Clock(bus);
-        clock.tick();
-        return clock;
-    }
-
-    Clock(Bus bus) {
+    Clock(Bus bus, CoffeeMaker coffeeMaker) {
         this.bus = bus;
+        this.coffeeMaker = coffeeMaker;
     }
 
-    private void tick() {
-        bus.update();
-
-        if (!isTicking) {
-            Executors.newScheduledThreadPool(1)
-                    .scheduleAtFixedRate(this::tick, 0, 1, TimeUnit.SECONDS);
-            isTicking = true;
-        }
+    public void start() {
+        Executors.newScheduledThreadPool(1)
+                .scheduleAtFixedRate(this::tick, 0, 1, TimeUnit.SECONDS);
     }
 
+    public void tick() {
+        bus.update(coffeeMaker.asBusMessage());
+    }
 }

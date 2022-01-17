@@ -1,6 +1,8 @@
 Simple coffee maker implementation
 
 # TODO - coffee maker proper
+* Finish clock builder
+* Fill water reservoir only up to max
 * Tests
 ** Does order of operations matter at all?
 ** What happens if I input two things to the coffee maker before it ticks?
