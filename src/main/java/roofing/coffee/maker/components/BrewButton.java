@@ -12,7 +12,7 @@ public class BrewButton implements BusComponent<BrewButton> {
         if (brewState == BrewRequestState.REQUESTED && message.getReservoir().isBrewing()) {
             brewState = BrewRequestState.RECEIVED;
 
-        } else if (brewState == BrewRequestState.RECEIVED) {
+        } else if (brewState == BrewRequestState.RECEIVED && !message.getReservoir().isBrewing()) {
             brewState = BrewRequestState.NOT_REQUESTED;
         }
     }

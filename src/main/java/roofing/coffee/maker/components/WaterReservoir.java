@@ -32,6 +32,7 @@ public class WaterReservoir implements BusComponent<WaterReservoir> {
     @Override
     public void refreshFrom(WaterReservoir other) {
         this.cupsOfWater = other.cupsOfWater;
+        this.isBrewing = other.isBrewing;
     }
 
     @Override

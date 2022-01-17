@@ -3,10 +3,19 @@ package roofing.coffee.maker.components;
 import roofing.coffee.maker.busses.BusComponent;
 import roofing.coffee.maker.busses.BusMessage;
 
+/**
+ * Like the WaterReservoir, the CoffeePot also relies on the clock in order to fill itself. However,
+ * there is a 1-cycle lag time between WaterReservoir.isBrewing() becoming true and the clock's next
+ * tick; thus, the CoffeePot will be 1 cycle behind.
+ * 
+ * @author nferraro-roofing
+ *
+ */
 public class CoffeePot implements BusComponent<CoffeePot> {
 
     // TODO: app setting
     // public in order to enable tests to spy into this value
+    // This value should be less than the max capacity of the
     public static final int MAX_CAPACITY_CUPS = 12;
 
     private int cupsOfCoffee = 0;

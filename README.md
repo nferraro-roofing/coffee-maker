@@ -22,12 +22,15 @@ Simple coffee maker implementation
 ** I would also make CoffeeMaker::currentState visible only within the roofing.coffee.maker.* package if that's possible
 ** I could solve all of this by ploping everything into once package. This isn't a bad idea, but I like very small packages
 * BrewButton internal state could probably use booleans instead of an enum
-* BrewButton rate of water loss per tick should be tunable.
+* WaterReservoir / CoffeePot rate of water loss per tick should be tunable.
 ** Based on a setting
 ** Setting should set a rate based on time; WaterReservoir should be aware of clock tick rate so it can remove water at the right rate no matter the clock
 * CoffeePot max capacity should be an app setting. This would also enable me to set it during test time rather than making the value itself public. I really don't like that it's public
 * Thread-safety in BusMessageBuilder
 * CoffeePot max capacity should be an app setting
+* CoffeeMaker has a one-way state diagram; there's no way to reset it - i.e clean it and re-use it tomorrow
+** It would be cool to make the coffee maker sensitive to the clock and reset itself after 30 minutes or something - like a real coffe maker
+** This would change the nature of isBrewing quite a bit!
 
 # Key difficulties I had
 * Making the thing unit-testable given the asynch ticking nature of the clock

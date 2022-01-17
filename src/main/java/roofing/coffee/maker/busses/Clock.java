@@ -9,7 +9,11 @@ public class Clock {
     private final Bus bus;
     private final CoffeeMaker coffeeMaker;
 
-    Clock(Bus bus, CoffeeMaker coffeeMaker) {
+    public static ClockBuilder builder() {
+        return new ClockBuilder();
+    }
+
+    private Clock(Bus bus, CoffeeMaker coffeeMaker) {
         this.bus = bus;
         this.coffeeMaker = coffeeMaker;
     }
@@ -21,5 +25,39 @@ public class Clock {
 
     public void tick() {
         bus.update(coffeeMaker.asBusMessage());
+    }
+
+    public static class ClockBuilder {
+
+        private Bus bus;
+        private CoffeeMaker coffeeMaker;
+
+        public ClockBuilder withBus(Bus bus) {
+            this.bus = bus;
+            return this;
+        }
+
+        public ClockBuilder withCoffeeMaker(CoffeeMaker coffeeMaker) {
+            this.coffeeMaker = coffeeMaker;
+            return this;
+        }
+
+        public Clock build() {
+            if (bus == null) {
+                throw new IllegalStateException(
+                        "You've attempted to build a Clock without setting a Bus, but a Bus is "
+                                + "required to build a Clock. Please use withBus() to set the "
+                                + "bus for this Clock.");
+            }
+
+            if (coffeeMaker == null) {
+                throw new IllegalStateException(
+                        "You've attempted to build a Clock without setting a CoffeeMaker, but a "
+                                + "CoffeeMaker is required to build a Clock. Please use "
+                                + "withCoffeeMaker() to set the bus for this Clock.");
+            }
+
+            return new Clock(bus, coffeeMaker);
+        }
     }
 }

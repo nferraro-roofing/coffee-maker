@@ -2,6 +2,7 @@ package roofing.coffee.maker;
 
 import roofing.coffee.maker.busses.Bus;
 import roofing.coffee.maker.busses.Clock;
+import roofing.coffee.maker.busses.Clock.ClockBuilder;
 import roofing.coffee.maker.components.BrewButton;
 import roofing.coffee.maker.components.CoffeePot;
 import roofing.coffee.maker.components.WarmerPlate;
@@ -23,7 +24,7 @@ public final class CoffeeMakerCreator {
     private CoffeeMakerCreator() { /* Disable construction */ }
 
     public static final CoffeeMaker create() {
-        ClockBuidler clockBuilder = Clock.builder();
+        ClockBuilder clockBuilder = Clock.builder();
         CoffeeMaker coffeeMaker = create(clockBuilder);
         clockBuilder.build().start();
         return coffeeMaker;
@@ -36,9 +37,9 @@ public final class CoffeeMakerCreator {
         WarmerPlate warmer = new WarmerPlate();
 
         Bus bus = new Bus(reservoir, button, pot, warmer);
-        CoffeeMaker coffeeMaker = new CoffeeMaker(bus, reservoir, button, pot, warmer);
+        CoffeeMaker coffeeMaker = new CoffeeMaker(reservoir, button, pot, warmer);
 
-        clockBuilder.withBus(bus).withCoffeMaker();
+        clockBuilder.withBus(bus).withCoffeeMaker(coffeeMaker);
 
         return coffeeMaker;
     }
