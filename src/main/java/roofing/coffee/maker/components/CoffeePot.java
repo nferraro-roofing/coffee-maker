@@ -6,7 +6,27 @@ import roofing.coffee.maker.busses.BusMessage;
 /**
  * Like the WaterReservoir, the CoffeePot also relies on the clock in order to fill itself. However,
  * there is a 1-cycle lag time between WaterReservoir.isBrewing() becoming true and the clock's next
- * tick; thus, the CoffeePot will be 1 cycle behind.
+ * tick; thus, the CoffeePot will be 1 cycle behind until 1 cycle after brewing stops. E.g.
+ * 
+ * <ol>
+ * <li>Fill reservoir with 12 cups of water</li>
+ * <li>Clock ticks. Reservoir contains 11 cups of water; coffee pot has 0 cups of coffee and has
+ * fallen behind by one tick.</li>
+ * <li>Clock ticks again. Reservoir contains 10 cups of water; coffee pot has 1 cup of coffee.</li>
+ * <li>Pause brew by removing the coffee pot or pressing the brew button.</li>
+ * <li>Clock ticks again. Reservoir contains 10 cups of water; coffee pot has 2 cups of coffee. The
+ * pot caught up.</li>
+ * <li>Resume brew.</li>
+ * <li>Clock ticks again. Reservoir contains 9 cups of water; coffee pot has 2 cup of coffee, and
+ * has fallen behind again.</li>
+ * </ol>
+ * 
+ * This lag time occurs because the water reservoir must begin brewing in order for the pot to begin
+ * to fill. But the pot cannot know that the reservoir is brewing until the cycle after the
+ * reservoir begins brewing.
+ * 
+ * This lag time should be of no real-world consequence. Unit tests against a coffee maker must
+ * understand this lag time.
  * 
  * @author nferraro-roofing
  *
@@ -15,7 +35,6 @@ public class CoffeePot implements BusComponent<CoffeePot> {
 
     // TODO: app setting
     // public in order to enable tests to spy into this value
-    // This value should be less than the max capacity of the
     public static final int MAX_CAPACITY_CUPS = 12;
 
     private int cupsOfCoffee = 0;

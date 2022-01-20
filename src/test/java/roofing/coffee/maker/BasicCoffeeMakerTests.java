@@ -19,7 +19,7 @@ import roofing.coffee.maker.components.CoffeePot;
  * @author nferraro-roofing
  *
  */
-class CoffeeMakerTest {
+class BasicCoffeeMakerTests {
 
     private Clock clock;
     private CoffeeMaker subject;
@@ -37,14 +37,15 @@ class CoffeeMakerTest {
         subject.fill(CoffeePot.MAX_CAPACITY_CUPS);
         subject.pressBrewButton();
 
-        // + 1 because CoffeePot has a one clock cycle lag time - see CoffeePot javadoc
-        for (int i = 0; i < CoffeePot.MAX_CAPACITY_CUPS + 1; i++) {
+        // + 5 in order to avoid any lag time in state propagation to various components
+        for (int i = 0; i < CoffeePot.MAX_CAPACITY_CUPS + 5; i++) {
             clock.tick();
         }
 
         // Then
         assertEquals(0, subject.cupsOfWater());
         assertFalse(subject.isBrewing());
+        assertTrue(subject.isWarmerPlateOn());
 
         assertEquals(CoffeePot.MAX_CAPACITY_CUPS, subject.cupsOfCoffee());
         assertEquals(CoffeePot.MAX_CAPACITY_CUPS, subject.removePot().cupsOfCoffee());
@@ -52,36 +53,29 @@ class CoffeeMakerTest {
     }
 
     @Test
-    void testStopBrewByPressingButton() {
-        // Given
-        int clockCycleOffset = 5;
-
+    void testBrewAllWaterWithExtraTicks() {
         // When
+        clock.tick();
+        clock.tick();
         subject.fill(CoffeePot.MAX_CAPACITY_CUPS);
+
+        clock.tick();
+        clock.tick();
         subject.pressBrewButton();
+        clock.tick();
 
-        // Partially brew
-        for (int i = 0; i < clockCycleOffset; i++) {
-            clock.tick();
-        }
-
-        subject.pressBrewButton();
-
-        // Try and finish brewing. Since the brew button was pressed again, this shouldn't do
-        // anything
-        for (int i = 0; i < CoffeePot.MAX_CAPACITY_CUPS - clockCycleOffset; i++) {
+        // + 5 in order to avoid any lag time in state propagation to various components
+        for (int i = 0; i < CoffeePot.MAX_CAPACITY_CUPS + 5; i++) {
             clock.tick();
         }
 
         // Then
-        assertEquals(CoffeePot.MAX_CAPACITY_CUPS - clockCycleOffset, subject.cupsOfWater());
+        assertEquals(0, subject.cupsOfWater());
         assertFalse(subject.isBrewing());
+        assertTrue(subject.isWarmerPlateOn());
 
-        assertEquals(clockCycleOffset, subject.cupsOfCoffee());
-        assertEquals(clockCycleOffset, subject.removePot().cupsOfCoffee());
-        assertFalse(subject.removePot().isFull());
+        assertEquals(CoffeePot.MAX_CAPACITY_CUPS, subject.cupsOfCoffee());
+        assertEquals(CoffeePot.MAX_CAPACITY_CUPS, subject.removePot().cupsOfCoffee());
+        assertTrue(subject.removePot().isFull());
     }
-
-    @Test
-    void assertStateDuringBrew() {}
 }

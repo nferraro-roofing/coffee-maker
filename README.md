@@ -1,8 +1,8 @@
 Simple coffee maker implementation
 
 # TODO - coffee maker proper
-* Finish clock builder
 * Fill water reservoir only up to max
+* cannot remove pot twice from coffee maker
 * Tests
 ** Does order of operations matter at all?
 ** What happens if I input two things to the coffee maker before it ticks?
@@ -10,7 +10,9 @@ Simple coffee maker implementation
 ** Use @TestFactory to create a random set of inputs for a coffee maker?
 * Javadoc / Readme
 ** The true issue with  this whole thing is that the problem is very contrived. It doesn't encapsulate any useful logic - it's all for its own sake. So I changed the problem statement a bit
+* Maybe note the 1-cycle lag time issue with all components and remove that stuff from the coffee pot section
 ** The low-memory, anit-GC approach with the BusMessage, builder, and BusComponent
+** Document tests too
 * Format javadoc and view how it actually turns out
 * maven enforcer rules?
 * Lombok?
@@ -26,6 +28,7 @@ Simple coffee maker implementation
 ** Based on a setting
 ** Setting should set a rate based on time; WaterReservoir should be aware of clock tick rate so it can remove water at the right rate no matter the clock
 * CoffeePot max capacity should be an app setting. This would also enable me to set it during test time rather than making the value itself public. I really don't like that it's public
+* WarmerPlate::STAY_HOT_CYCLE_COUNT should be an app setting
 * Thread-safety in BusMessageBuilder
 * CoffeePot max capacity should be an app setting
 * CoffeeMaker has a one-way state diagram; there's no way to reset it - i.e clean it and re-use it tomorrow
