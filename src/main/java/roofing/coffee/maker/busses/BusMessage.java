@@ -68,11 +68,11 @@ public class BusMessage {
     public static class BusMessageBuilder {
 
         // TODO: this approach is not thread safe unless we make a new BusMessageBuilder each
-        // time we need one, but that defeats the whole purpos . Need some locking mechanism
-        private final WaterReservoir reservoir = new WaterReservoir();
+        // time we need one, but that defeats the whole purpose. Need some locking mechanism
+        private final WaterReservoir reservoir = WaterReservoir.busMessageInstance();
         private final BrewButton button = new BrewButton();
-        private final CoffeePot pot = new CoffeePot();
-        private final WarmerPlate warmer = new WarmerPlate();
+        private final CoffeePot pot = CoffeePot.busMessageInstance();
+        private final WarmerPlate warmer = WarmerPlate.busMessageInstance();
         
         private boolean isReservoirSet = false;
         private boolean isButtonSet = false;

@@ -5,25 +5,40 @@ import roofing.coffee.maker.busses.BusMessage;
 
 public class WarmerPlate implements BusComponent<WarmerPlate> {
 
-    // TODO: app setting
-    // public in order to enable tests to spy into this value
-    public static final int STAY_HOT_CYCLE_COUNT = 5;
+    private final long stayHotTickLimit;
 
     private int cyclesAfterBrewStopped = 0;
     private boolean hasPot = true;
     private boolean isHot = false;
+
+    /**
+     * Create an instance of a WarmerPlate to be used as within a bus message.
+     * 
+     * @return a WarmerPlate inteded for use within a BusMessage.
+     */
+    public static WarmerPlate busMessageInstance() {
+        return new WarmerPlate();
+    }
+
+    public WarmerPlate(long stayHotTickLimit) {
+        this.stayHotTickLimit = stayHotTickLimit;
+    }
+
+    private WarmerPlate() {
+        this.stayHotTickLimit = 0;
+    }
 
     @Override
     public void readBusMessage(BusMessage message) {
         boolean reservoirIsBrewing = message.getReservoir().isBrewing();
 
         // < instead of <= because WarmerPlate naturally has a 1-tick lag time after brewing stops
-        isHot = reservoirIsBrewing || cyclesAfterBrewStopped < STAY_HOT_CYCLE_COUNT;
+        isHot = reservoirIsBrewing || cyclesAfterBrewStopped < stayHotTickLimit;
 
         if (reservoirIsBrewing) {
             cyclesAfterBrewStopped = 0;
 
-        } else if (cyclesAfterBrewStopped < STAY_HOT_CYCLE_COUNT) {
+        } else if (cyclesAfterBrewStopped < stayHotTickLimit) {
             cyclesAfterBrewStopped++;
         }
     }

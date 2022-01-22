@@ -37,8 +37,22 @@ public class CoffeePot implements BusComponent<CoffeePot> {
 
     private int cupsOfCoffee = 0;
 
+    /**
+     * Create an instance of a CoffeePot to be used as within a bus message. This instance has no
+     * capacity.
+     * 
+     * @return a CoffeePot that has no capacity.
+     */
+    public static CoffeePot busMessageInstance() {
+        return new CoffeePot();
+    }
+
     public CoffeePot(int maxCapacityCups) {
         this.maxCapacityCups = maxCapacityCups;
+    }
+
+    private CoffeePot() {
+        this.maxCapacityCups = 0;
     }
 
     @Override

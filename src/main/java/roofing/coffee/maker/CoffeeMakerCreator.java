@@ -27,17 +27,18 @@ public final class CoffeeMakerCreator {
     public static final CoffeeMaker create(CoffeeMakerProperties properties) {
         ClockBuilder clockBuilder = Clock.builder();
         CoffeeMaker coffeeMaker = create(clockBuilder, properties);
-
-        Clock clockProps = properties.getClockProperties();
-        clockBuilder.build().start(clockProps.getTickDelay(), clockProps.getDelayUnit());
+        clockBuilder.build()
+                    .start(properties.getClockTickDelay(), properties.getClockTickDelayUnit());
         return coffeeMaker;
     }
 
     static final CoffeeMaker create(ClockBuilder clockBuilder, CoffeeMakerProperties properties) {
-        WaterReservoir reservoir = new WaterReservoir();
+        WaterReservoir reservoir = new WaterReservoir(
+                properties.getReservoirMaxCapacityCups(),
+                properties.getReservoirTicksPerCupBrewed());
         BrewButton button = new BrewButton();
-        CoffeePot pot = new CoffeePot(properties.getPotProperties().getMaxCapacityCups());
-        WarmerPlate warmer = new WarmerPlate();
+        CoffeePot pot = new CoffeePot(properties.getPotMaxCapacityCups());
+        WarmerPlate warmer = new WarmerPlate(properties.getWarmerPlateStayHotForTickLimit());
 
         Bus bus = new Bus(reservoir, button, pot, warmer);
         CoffeeMaker coffeeMaker = new CoffeeMaker(reservoir, button, pot, warmer);

@@ -5,12 +5,6 @@ import roofing.coffee.maker.busses.BusMessage;
 
 public class WaterReservoir implements BusComponent<WaterReservoir> {
 
-    /*
-     * TODO: Should turn this into an app setting. The setting should specify a rate = e.g. cups /
-     * TIME. WaterReservoir could become aware of the clock speed and adjust its cup brew rate per
-     * time accordingly.
-     */
-
     private final int maxCapacityCups;
     private final long ticksPerCupBrewed;
 
@@ -18,9 +12,24 @@ public class WaterReservoir implements BusComponent<WaterReservoir> {
     private boolean isBrewing = false;
     private long ticksSinceLastCupBrewed = 0;
 
-    public WaterReservoir(int maxCapacityCups, int ticksPerCupBrewed) {
+    /**
+     * Create an instance of a WaterReservoir to be used as within a bus message. This instance has
+     * no capacity and cannot brew any coffee.
+     * 
+     * @return a WaterReservoir that has no capacity and cannot brew any coffee.
+     */
+    public static WaterReservoir busMessageInstance() {
+        return new WaterReservoir();
+    }
+
+    public WaterReservoir(int maxCapacityCups, long ticksPerCupBrewed) {
         this.maxCapacityCups = maxCapacityCups;
         this.ticksPerCupBrewed = ticksPerCupBrewed;
+    }
+
+    private WaterReservoir() {
+        this.maxCapacityCups = 0;
+        this.ticksPerCupBrewed = 0;
     }
     
     @Override

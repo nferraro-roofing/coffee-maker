@@ -54,12 +54,10 @@ public final class CoffeeMakerProperties {
                 / reservoir.cupsPerMinuteBrewRate;
     }
 
-    public Reservoir getReservoirProperties() {
-        return reservoir;
-    }
-
-    public WarmerPlate getWarmerPlateProperties() {
-        return warmerPlate;
+    public long getWarmerPlateStayHotForTickLimit() {
+        return clock.delayUnit.convert(1, TimeUnit.MINUTES) 
+                / clock.tickDelay
+                / warmerPlate.stayHotDurationMinutes;
     }
 
     public static class Clock {
