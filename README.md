@@ -1,19 +1,23 @@
 Simple coffee maker implementation
 
 # TODO - coffee maker proper
-* Fill water reservoir only up to max
-* cannot remove pot twice from coffee maker
-* Tests
-** Does order of operations matter at all?
-** What happens if I input two things to the coffee maker before it ticks?
-** Init a coffee maker with a state - e.g. WarmerPlate.hasPot(), WaterReservoir.cupsOfWater(), etc
-** Use @TestFactory to create a random set of inputs for a coffee maker?
+* App settings
+** warmer plate stay hot duration
+** Update tests
+** fix red
+*** add tests for CoffeeMakerProperties where appropriate
+*** careful of warmer plate duration, water reservoir brew rate, and coffee pot brew rate. E.g. make sure ticksSinceLastCupBrewed resets properly and such
+* Logging
 * Javadoc / Readme
 ** The true issue with  this whole thing is that the problem is very contrived. It doesn't encapsulate any useful logic - it's all for its own sake. So I changed the problem statement a bit
 * Maybe note the 1-cycle lag time issue with all components and remove that stuff from the coffee pot section
 ** The low-memory, anit-GC approach with the BusMessage, builder, and BusComponent
 ** Document tests too
+** describe the framework agnostic natue of the settings
+** describe whatthe settings do and how to use them & restrictions and such
+*** Note how coffee pot brew rate is an approximations and depends on the clock tick rate etc
 * Format javadoc and view how it actually turns out
+** especially interested in CoffeeMakerSettings
 * maven enforcer rules?
 * Lombok?
 
@@ -22,18 +26,15 @@ Simple coffee maker implementation
 ** This would allow me to export only CoffeeMaker rather than everything, while also allowing me to organize my packages in a readable, discoverable manner
 ** I would export CoffeeMaker, CoffeeMakerCreator, and BrewButton only
 ** I would also make CoffeeMaker::currentState visible only within the roofing.coffee.maker.* package if that's possible
-** I could solve all of this by ploping everything into once package. This isn't a bad idea, but I like very small packages
+** I could solve all of this by plopping everything into once package. This isn't a bad idea, but I like very small packages
 * BrewButton internal state could probably use booleans instead of an enum
-* WaterReservoir / CoffeePot rate of water loss per tick should be tunable.
-** Based on a setting
-** Setting should set a rate based on time; WaterReservoir should be aware of clock tick rate so it can remove water at the right rate no matter the clock
-* CoffeePot max capacity should be an app setting. This would also enable me to set it during test time rather than making the value itself public. I really don't like that it's public
-* WarmerPlate::STAY_HOT_CYCLE_COUNT should be an app setting
 * Thread-safety in BusMessageBuilder
 * CoffeePot max capacity should be an app setting
 * CoffeeMaker has a one-way state diagram; there's no way to reset it - i.e clean it and re-use it tomorrow
 ** It would be cool to make the coffee maker sensitive to the clock and reset itself after 30 minutes or something - like a real coffe maker
 ** This would change the nature of isBrewing quite a bit!
+* More granular brew rate than whole cups
+* never added the concept of a coffee ground holder
 
 # Key difficulties I had
 * Making the thing unit-testable given the asynch ticking nature of the clock

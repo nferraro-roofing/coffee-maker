@@ -33,18 +33,20 @@ import roofing.coffee.maker.busses.BusMessage;
  */
 public class CoffeePot implements BusComponent<CoffeePot> {
 
-    // TODO: app setting
-    // public in order to enable tests to spy into this value
-    public static final int MAX_CAPACITY_CUPS = 12;
+    private final int maxCapacityCups;
 
     private int cupsOfCoffee = 0;
 
+    public CoffeePot(int maxCapacityCups) {
+        this.maxCapacityCups = maxCapacityCups;
+    }
+
     @Override
     public void readBusMessage(BusMessage message) {
-        if (message.getReservoir().isBrewing()) {
-            // If the reservoir does not stop brewing at the appropriate time, it's possible that
-            // the pot over fills! The pot cannot stop the reservoir from doing this, of course
-            cupsOfCoffee += message.getReservoir().brewRate();
+        int nextCupsOfCoffee = cupsOfCoffee + message.getReservoir().brewRate();
+
+        if (message.getReservoir().isBrewing() && nextCupsOfCoffee <= maxCapacityCups) {
+            cupsOfCoffee = nextCupsOfCoffee;
         }
     }
 
@@ -58,7 +60,6 @@ public class CoffeePot implements BusComponent<CoffeePot> {
         this.cupsOfCoffee = 0;
     }
 
-    // Cannot do this if the warmer plate says i'm still in the coffee pot!
     public void pourOutCoffee(int cups) {
         cupsOfCoffee = cups >= cupsOfCoffee ? 0 : cupsOfCoffee - cups;
     }
@@ -69,6 +70,6 @@ public class CoffeePot implements BusComponent<CoffeePot> {
 
     public boolean isFull() {
         // Should never be greater than, but it doesn't hurt to add the check here!
-        return cupsOfCoffee >= MAX_CAPACITY_CUPS;
+        return cupsOfCoffee >= maxCapacityCups;
     }
 }

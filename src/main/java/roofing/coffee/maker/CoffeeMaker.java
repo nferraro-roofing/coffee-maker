@@ -45,12 +45,25 @@ public class CoffeeMaker {
     }
 
     public CoffeePot removePot() {
-        warmer.removePot();
-        return pot;
+        if (warmer.hasPot()) {
+            warmer.removePot();
+            return pot;
+        }
+
+        throw new IllegalStateException(
+                "The coffee pot has been removed previously without replacement. Please replace "
+                        + "the pot via replacePot() before removing again.");
     }
 
     public void replacePot() {
-        warmer.replacePot();
+        if (!warmer.hasPot()) {
+            warmer.replacePot();
+
+        } else {
+            throw new IllegalStateException(
+                    "The coffee pot is currently on the warmer plate. Cannot replace a pot that "
+                            + "is already present! Please remove the pot first via removePot().");
+        }
     }
 
     public BusMessage asBusMessage() {

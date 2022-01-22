@@ -58,9 +58,10 @@ class PauseAndResumeBrewTests {
         assertEquals(CoffeePot.MAX_CAPACITY_CUPS - clockCycleOffset, subject.cupsOfWater());
         assertFalse(subject.isBrewing());
 
+        CoffeePot actualPot = subject.removePot();
         assertEquals(clockCycleOffset, subject.cupsOfCoffee());
-        assertEquals(clockCycleOffset, subject.removePot().cupsOfCoffee());
-        assertFalse(subject.removePot().isFull());
+        assertEquals(clockCycleOffset, actualPot.cupsOfCoffee());
+        assertFalse(actualPot.isFull());
     }
 
     @Test
@@ -103,9 +104,10 @@ class PauseAndResumeBrewTests {
 
         // - 1 because there is a 1-cycle lag time between coffee that is brewed vs water in the
         // reservoir. E.g. when we resume brewing, the coffee pot needs 1 cycle to catch up
+        CoffeePot actualPot = subject.removePot();
         assertEquals(initialBrewCycles + secondBrewCycles - 1, subject.cupsOfCoffee());
-        assertEquals(initialBrewCycles + secondBrewCycles - 1, subject.removePot().cupsOfCoffee());
-        assertFalse(subject.removePot().isFull());
+        assertEquals(initialBrewCycles + secondBrewCycles - 1, actualPot.cupsOfCoffee());
+        assertFalse(actualPot.isFull());
     }
 
 
@@ -206,8 +208,10 @@ class PauseAndResumeBrewTests {
         assertTrue(subject.isBrewing());
 
         assertEquals(2, subject.cupsOfCoffee());
-        assertEquals(2, subject.removePot().cupsOfCoffee());
-        assertFalse(subject.removePot().isFull());
+
+        CoffeePot actualPot = subject.removePot();
+        assertEquals(2, actualPot.cupsOfCoffee());
+        assertFalse(actualPot.isFull());
     }
 
     // TODO: pause/unpause again and again and try to not let coffee pot catch up

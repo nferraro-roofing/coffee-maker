@@ -10,11 +10,19 @@ public class WaterReservoir implements BusComponent<WaterReservoir> {
      * TIME. WaterReservoir could become aware of the clock speed and adjust its cup brew rate per
      * time accordingly.
      */
-    private static final int BREW_RATE = 1;
+
+    private final int maxCapacityCups;
+    private final long ticksPerCupBrewed;
 
     private int cupsOfWater = 0;
     private boolean isBrewing = false;
+    private long ticksSinceLastCupBrewed = 0;
 
+    public WaterReservoir(int maxCapacityCups, int ticksPerCupBrewed) {
+        this.maxCapacityCups = maxCapacityCups;
+        this.ticksPerCupBrewed = ticksPerCupBrewed;
+    }
+    
     @Override
     public void readBusMessage(BusMessage message) {
         isBrewing = message.getButton().isBrewRequested()
@@ -22,10 +30,16 @@ public class WaterReservoir implements BusComponent<WaterReservoir> {
                 && !message.getPot().isFull()
                 && !isEmpty();
 
-        int nextCupsOfWater = cupsOfWater - BREW_RATE;
+        if (isBrewing) {
+            ticksSinceLastCupBrewed++;
 
-        if (isBrewing && nextCupsOfWater >= 0) {
-            cupsOfWater = nextCupsOfWater;
+            if (ticksSinceLastCupBrewed == ticksPerCupBrewed) {
+                cupsOfWater++;
+            }
+        } else if (isEmpty()) { // Only reset state if we have nothing else to brew. Otherwise, we
+                                // want to be able to return to where we left off - e.g. resume
+                                // brewing after use removed and replaced the coffee pot
+            ticksSinceLastCupBrewed = 0;
         }
     }
 
@@ -42,6 +56,19 @@ public class WaterReservoir implements BusComponent<WaterReservoir> {
     }
 
     public void fill(int cupsOfwater) {
+        int nextCupsOfWater = this.cupsOfWater + cupsOfwater;
+
+        if (nextCupsOfWater > maxCapacityCups) {
+            throw new IllegalArgumentException(
+                    String.format(
+                            "Filling %1d cups of water would overfill the reservoir. The reservoir "
+                                    + "currently contains %2d cups of water, and the max total "
+                                    + "capacity is %3d cups.",
+                            cupsOfwater,
+                            this.cupsOfWater,
+                            maxCapacityCups));
+        }
+
         this.cupsOfWater += cupsOfwater;
     }
 
@@ -56,9 +83,5 @@ public class WaterReservoir implements BusComponent<WaterReservoir> {
     public boolean isEmpty() {
         // This really should never go negative, but it doesn't hurt to check!
         return cupsOfWater <= 0;
-    }
-
-    int brewRate() {
-        return BREW_RATE;
     }
 }

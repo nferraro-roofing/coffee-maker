@@ -18,9 +18,9 @@ public class Clock {
         this.coffeeMaker = coffeeMaker;
     }
 
-    public void start() {
+    public void start(long period, TimeUnit periodUnit) {
         Executors.newScheduledThreadPool(1)
-                .scheduleAtFixedRate(this::tick, 0, 1, TimeUnit.SECONDS);
+                .scheduleAtFixedRate(this::tick, 0, period, periodUnit);
     }
 
     public void tick() {

@@ -37,16 +37,6 @@ public class BusMessage {
         this.warmer = warmer;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
     public WaterReservoir getReservoir() {
         return reservoir;
     }
@@ -121,7 +111,7 @@ public class BusMessage {
         private void assertState() {
             if (!isReservoirSet) {
                 throw new IllegalStateException(
-                        "A WaterReservoir is required to build a BusMessage,  but none was "
+                        "A WaterReservoir is required to build a BusMessage,but none was "
                                 + "provided to this builder. Please call withWaterReservoir().");
             }
 
