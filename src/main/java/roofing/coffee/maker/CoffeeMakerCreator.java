@@ -36,8 +36,12 @@ public final class CoffeeMakerCreator {
         WaterReservoir reservoir = new WaterReservoir(
                 properties.getReservoirMaxCapacityCups(),
                 properties.getReservoirTicksPerCupBrewed());
+
+        CoffeePot pot = new CoffeePot(
+                properties.getPotMaxCapacityCups(),
+                properties.getReservoirTicksPerCupBrewed());
+
         BrewButton button = new BrewButton();
-        CoffeePot pot = new CoffeePot(properties.getPotMaxCapacityCups());
         WarmerPlate warmer = new WarmerPlate(properties.getWarmerPlateStayHotForTickLimit());
 
         Bus bus = new Bus(reservoir, button, pot, warmer);

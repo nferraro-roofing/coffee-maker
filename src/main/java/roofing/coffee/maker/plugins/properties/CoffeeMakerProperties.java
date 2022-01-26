@@ -66,13 +66,13 @@ public final class CoffeeMakerProperties {
         private final TimeUnit delayUnit;
 
         public Clock(long tickDelay, TimeUnit delayUnit) {
-            if (tickDelay > 0) {
+            if (tickDelay <= 0) {
                 throw new InvalidClockTickDelayPropertyException(tickDelay);
             }
 
-            // delayUnit must be no more coarse than TimeUnit.SECONDS. If delayUnit is coarser than
+            // delayUnit must be no more coarser than TimeUnit.SECONDS. If delayUnit is coarser than
             // seconds, converting it to seconds would return 0
-            if (delayUnit.convert(1, TimeUnit.MINUTES) > 0) {
+            if (TimeUnit.SECONDS.convert(1, delayUnit) > 0) {
                 throw new InvalidClockTimeUnitPropertyException(delayUnit.toString());
             }
 

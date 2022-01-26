@@ -34,8 +34,10 @@ import roofing.coffee.maker.busses.BusMessage;
 public class CoffeePot implements BusComponent<CoffeePot> {
 
     private final int maxCapacityCups;
+    private final long ticksPerCupBrewed;
 
     private int cupsOfCoffee = 0;
+    private long ticksSinceLastCupBrewed = 0;
 
     /**
      * Create an instance of a CoffeePot to be used as within a bus message. This instance has no
@@ -47,20 +49,35 @@ public class CoffeePot implements BusComponent<CoffeePot> {
         return new CoffeePot();
     }
 
-    public CoffeePot(int maxCapacityCups) {
+    public CoffeePot(int maxCapacityCups, long ticksPerCupBrewed) {
         this.maxCapacityCups = maxCapacityCups;
+        this.ticksPerCupBrewed = ticksPerCupBrewed;
     }
 
     private CoffeePot() {
-        this.maxCapacityCups = 0;
+        maxCapacityCups = 0;
+        ticksPerCupBrewed = 0;
     }
 
     @Override
     public void readBusMessage(BusMessage message) {
-        int nextCupsOfCoffee = cupsOfCoffee + message.getReservoir().brewRate();
+        WaterReservoir waterReservoir = message.getReservoir();
 
-        if (message.getReservoir().isBrewing() && nextCupsOfCoffee <= maxCapacityCups) {
-            cupsOfCoffee = nextCupsOfCoffee;
+        if (waterReservoir.isBrewing()) {
+            ticksSinceLastCupBrewed++;
+
+            if (ticksSinceLastCupBrewed == ticksPerCupBrewed) {
+                int nextCupsOfCoffee = cupsOfCoffee + 1;
+
+                if (message.getReservoir().isBrewing() && nextCupsOfCoffee <= maxCapacityCups) {
+                    cupsOfCoffee = nextCupsOfCoffee;
+                }
+            }
+        } else if (waterReservoir.isEmpty()) {
+            // Only reset state if we have nothing else to brew. Otherwise, we
+            // want to be able to return to where we left off - e.g. resume
+            // brewing after use removed and replaced the coffee pot
+            ticksSinceLastCupBrewed = 0;
         }
     }
 

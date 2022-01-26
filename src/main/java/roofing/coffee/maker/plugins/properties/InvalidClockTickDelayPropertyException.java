@@ -4,7 +4,7 @@ package roofing.coffee.maker.plugins.properties;
 public class InvalidClockTickDelayPropertyException extends RuntimeException {
 
     private static final String MESSAGE = "A coffee maker's clock tick rate is required and "
-            + "must be > 0. The provided value was %1l. Please correct this value and re-start the "
+            + "must be > 0. The provided value was %1d. Please correct this value and re-start the "
             + "application.";
 
     public InvalidClockTickDelayPropertyException(long providedTickRate) {
