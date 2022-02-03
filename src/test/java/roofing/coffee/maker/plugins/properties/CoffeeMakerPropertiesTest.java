@@ -2,6 +2,7 @@ package roofing.coffee.maker.plugins.properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -27,10 +28,11 @@ class CoffeeMakerPropertiesTest {
 
         // Then
         assertEquals(1, subject.getClockTickDelay());
-        assertEquals(1, subject.getClockTickDelayUnit());
+        assertEquals(TimeUnit.SECONDS, subject.getClockTickDelayUnit());
         assertEquals(1, subject.getPotMaxCapacityCups());
-        assertEquals(1, subject.getReservoirTicksPerCupBrewed());
-        assertEquals(1, subject.getWarmerPlateStayHotForTickLimit());
+        assertEquals(60, subject.getReservoirTicksPerCupBrewed());
+        assertEquals(60, subject.getWarmerPlateStayHotForTickLimit());
+        assertEquals(2, subject.getReservoirMaxCapacityCups());
     }
 
     @Test
@@ -63,5 +65,18 @@ class CoffeeMakerPropertiesTest {
                         + timeUnit
                         + ". Please correct this property value and re-start the application.",
                 thrown.getMessage());
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = TimeUnit.class, names = {"NANOSECONDS", "MICROSECONDS", "SECONDS"})
+    void testClockCreateClockWithGoodTimeUnit(TimeUnit timeUnit) {
+        // Given
+        long tickDelay = 1; // Valid
+
+        // When
+        new Clock(tickDelay, timeUnit);
+
+        // Then - as long as the above line doesn't throw an exception, pass
+        assertTrue(true);
     }
 }

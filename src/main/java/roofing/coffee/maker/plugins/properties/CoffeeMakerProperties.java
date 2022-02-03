@@ -71,8 +71,9 @@ public final class CoffeeMakerProperties {
             }
 
             // delayUnit must be no more coarser than TimeUnit.SECONDS. If delayUnit is coarser than
-            // seconds, converting it to seconds would return 0
-            if (TimeUnit.SECONDS.convert(1, delayUnit) > 0) {
+            // seconds, converting it to seconds would MINUTES (the next coarser TimeUnit) would 
+            // return 0
+            if (TimeUnit.MINUTES.convert(1, delayUnit) > 0) {
                 throw new InvalidClockTimeUnitPropertyException(delayUnit.toString());
             }
 
