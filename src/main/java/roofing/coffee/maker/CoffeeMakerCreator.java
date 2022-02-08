@@ -34,7 +34,7 @@ public final class CoffeeMakerCreator {
 
     static final CoffeeMaker create(ClockBuilder clockBuilder, CoffeeMakerProperties properties) {
         WaterReservoir reservoir = new WaterReservoir(
-                properties.getReservoirMaxCapacityCups(),
+                properties.getPotMaxCapacityCups(),
                 properties.getReservoirTicksPerCupBrewed());
 
         CoffeePot pot = new CoffeePot(

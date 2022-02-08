@@ -5,8 +5,17 @@ import roofing.coffee.maker.busses.BusMessage;
 
 public class WaterReservoir implements BusComponent<WaterReservoir> {
 
-    private final int maxCapacityCups;
+    // Public so that tests can access me
+    public static final int COFFEE_POT_MAX_CAPACITY_OFFSET = 1;
+
     private final long ticksPerCupBrewed;
+
+    // This member comes from an app setting (see CoffeeMakerProperties and CoffeeMakerCreator).
+    // Therefore, it should be final. However, instances of WaterReservoir that are intended for use
+    // a BusMessage won't know this value (see busMessageInstance()). As a result, the only way
+    // for such instances to know about this value is from other instances post-creation time in
+    // refreshFrom() - thus preventing this value from being final.
+    private int maxCapacityCups;
 
     private int cupsOfWater = 0;
     private boolean isBrewing = false;
@@ -22,8 +31,8 @@ public class WaterReservoir implements BusComponent<WaterReservoir> {
         return new WaterReservoir();
     }
 
-    public WaterReservoir(int maxCapacityCups, long ticksPerCupBrewed) {
-        this.maxCapacityCups = maxCapacityCups;
+    public WaterReservoir(int potMaxCapacityCups, long ticksPerCupBrewed) {
+        this.maxCapacityCups = potMaxCapacityCups + COFFEE_POT_MAX_CAPACITY_OFFSET;
         this.ticksPerCupBrewed = ticksPerCupBrewed;
     }
 
@@ -43,7 +52,8 @@ public class WaterReservoir implements BusComponent<WaterReservoir> {
             ticksSinceLastCupBrewed++;
 
             if (ticksSinceLastCupBrewed == ticksPerCupBrewed) {
-                cupsOfWater++;
+                cupsOfWater--;
+                ticksSinceLastCupBrewed = 0;
             }
         } else if (isEmpty()) { // Only reset state if we have nothing else to brew. Otherwise, we
                                 // want to be able to return to where we left off - e.g. resume
@@ -56,6 +66,7 @@ public class WaterReservoir implements BusComponent<WaterReservoir> {
     public void refreshFrom(WaterReservoir other) {
         this.cupsOfWater = other.cupsOfWater;
         this.isBrewing = other.isBrewing;
+        this.maxCapacityCups = other.maxCapacityCups;
     }
 
     @Override

@@ -44,41 +44,51 @@ public final class CoffeeMakerProperties {
         return pot.maxCapacityCups;
     }
 
-    public int getReservoirMaxCapacityCups() {
-        return pot.maxCapacityCups + reservoir.maxCapacityCupsOffset;
-    }
-
     public long getReservoirTicksPerCupBrewed() {
-        return clock.delayUnit.convert(1, TimeUnit.MINUTES) 
-                / clock.tickDelay
-                / reservoir.cupsPerMinuteBrewRate;
+        return clock.ticksPerMinute / reservoir.cupsPerMinuteBrewRate;
     }
 
     public long getWarmerPlateStayHotForTickLimit() {
-        return clock.delayUnit.convert(1, TimeUnit.MINUTES) 
-                / clock.tickDelay
-                / warmerPlate.stayHotDurationMinutes;
+        return clock.ticksPerMinute * warmerPlate.stayHotDurationMinutes;
     }
 
     public static class Clock {
 
         private final long tickDelay;
         private final TimeUnit delayUnit;
+        private final long ticksPerMinute;
 
         public Clock(long tickDelay, TimeUnit delayUnit) {
+            assertTickDelay(tickDelay);
+            assertTimeUnit(delayUnit);
+
+            this.tickDelay = tickDelay;
+            this.delayUnit = delayUnit;
+            ticksPerMinute = delayUnit.convert(1, TimeUnit.MINUTES) / tickDelay;
+
+            assertTicksPerMinute();
+        }
+
+        private void assertTickDelay(long tickDelay) {
             if (tickDelay <= 0) {
                 throw new InvalidClockTickDelayPropertyException(tickDelay);
             }
+        }
 
+        private void assertTimeUnit(TimeUnit delayUnit) {
             // delayUnit must be no more coarser than TimeUnit.SECONDS. If delayUnit is coarser than
             // seconds, converting it to seconds would MINUTES (the next coarser TimeUnit) would 
             // return 0
             if (TimeUnit.MINUTES.convert(1, delayUnit) > 0) {
                 throw new InvalidClockTimeUnitPropertyException(delayUnit.toString());
             }
+        }
 
-            this.tickDelay = tickDelay;
-            this.delayUnit = delayUnit;
+        private void assertTicksPerMinute() {
+            // A clock should not tick slower than once per minute
+            if (ticksPerMinute <= 0) {
+                throw new InvalidClockTicksPerMinuteException(tickDelay, delayUnit);
+            }
         }
     }
 
@@ -93,11 +103,9 @@ public final class CoffeeMakerProperties {
 
     public static class Reservoir {
 
-        private final int maxCapacityCupsOffset;
         private final int cupsPerMinuteBrewRate;
 
-        public Reservoir(int maxCapacityCupsOffset, int cupsPerMinuteBrewRate) {
-            this.maxCapacityCupsOffset = maxCapacityCupsOffset;
+        public Reservoir(int cupsPerMinuteBrewRate) {
             this.cupsPerMinuteBrewRate = cupsPerMinuteBrewRate;
         }
     }

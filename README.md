@@ -9,6 +9,7 @@ Simple coffee maker implementation
 *** careful of warmer plate duration, water reservoir brew rate, and coffee pot brew rate. E.g. make sure ticksSinceLastCupBrewed resets properly and such
 * Logging
 * Javadoc / Readme
+** Not too happy with COFFEE_POT_MAX_CAPACITY_OFFSET being package protected
 ** The true issue with  this whole thing is that the problem is very contrived. It doesn't encapsulate any useful logic - it's all for its own sake. So I changed the problem statement a bit
 * Maybe note the 1-cycle lag time issue with all components and remove that stuff from the coffee pot section
 ** The low-memory, anit-GC approach with the BusMessage, builder, and BusComponent

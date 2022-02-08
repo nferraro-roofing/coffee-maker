@@ -33,8 +33,13 @@ import roofing.coffee.maker.busses.BusMessage;
  */
 public class CoffeePot implements BusComponent<CoffeePot> {
 
-    private final int maxCapacityCups;
-    private final long ticksPerCupBrewed;
+    // These members come from app settings (see CoffeeMakerProperties and CoffeeMakerCreator).
+    // Therefore, they should be final. However, instances of CoffeePot that are intended for use
+    // a BusMessage won't know these values (see busMessageInstance()). As a result, the only way
+    // for such instances to know about this value is from other instances post-creation time in
+    // refreshFrom() - thus preventing these values from being final.
+    private int maxCapacityCups;
+    private long ticksPerCupBrewed;
 
     private int cupsOfCoffee = 0;
     private long ticksSinceLastCupBrewed = 0;
@@ -67,9 +72,10 @@ public class CoffeePot implements BusComponent<CoffeePot> {
             ticksSinceLastCupBrewed++;
 
             if (ticksSinceLastCupBrewed == ticksPerCupBrewed) {
+                ticksSinceLastCupBrewed = 0;
                 int nextCupsOfCoffee = cupsOfCoffee + 1;
 
-                if (message.getReservoir().isBrewing() && nextCupsOfCoffee <= maxCapacityCups) {
+                if (nextCupsOfCoffee <= maxCapacityCups) {
                     cupsOfCoffee = nextCupsOfCoffee;
                 }
             }
@@ -84,6 +90,8 @@ public class CoffeePot implements BusComponent<CoffeePot> {
     @Override
     public void refreshFrom(CoffeePot other) {
         this.cupsOfCoffee = other.cupsOfCoffee;
+        this.maxCapacityCups = other.maxCapacityCups;
+        this.ticksPerCupBrewed = other.ticksPerCupBrewed;
     }
 
     @Override

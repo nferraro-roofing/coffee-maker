@@ -4,12 +4,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import roofing.coffee.maker.busses.Clock;
 import roofing.coffee.maker.busses.Clock.ClockBuilder;
 import roofing.coffee.maker.components.CoffeePot;
 import roofing.coffee.maker.components.WaterReservoir;
+import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties;
+import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.Pot;
+import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.Reservoir;
+import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.WarmerPlate;
 
 /**
  * TODO: complete docs
@@ -23,24 +29,38 @@ import roofing.coffee.maker.components.WaterReservoir;
  */
 class BasicCoffeeMakerTests {
 
+    private static CoffeeMakerProperties props;
+
     private Clock clock;
     private CoffeeMaker subject;
+
+    @BeforeAll
+    static void initProps() {
+        CoffeeMakerProperties.Clock clock = new CoffeeMakerProperties.Clock(60L, TimeUnit.SECONDS);
+        Pot pot = new Pot(10);
+        Reservoir reservoir = new Reservoir(1);
+        WarmerPlate warmerPlate = new WarmerPlate(10);
+
+        // When
+        props = new CoffeeMakerProperties(clock, pot, reservoir, warmerPlate);
+    }
 
     @BeforeEach
     void initSubjectAndClock() {
         ClockBuilder clockBuilder = Clock.builder();
-        subject = CoffeeMakerCreator.create(clockBuilder);
+        subject = CoffeeMakerCreator.create(clockBuilder, props);
         clock = clockBuilder.build();
     }
 
     @Test
     void testFullBrew() {
         // When
-        subject.fill(CoffeePot.MAX_CAPACITY_CUPS);
+        int fillLvl = props.getPotMaxCapacityCups() + WaterReservoir.COFFEE_POT_MAX_CAPACITY_OFFSET;
+        subject.fill(fillLvl);
         subject.pressBrewButton();
 
         // + 5 in order to avoid any lag time in state propagation to various components
-        for (int i = 0; i < CoffeePot.MAX_CAPACITY_CUPS + 5; i++) {
+        for (int i = 0; i < fillLvl + 5; i++) {
             clock.tick();
         }
 
@@ -50,17 +70,18 @@ class BasicCoffeeMakerTests {
         assertTrue(subject.isWarmerPlateOn());
 
         CoffeePot actualPot = subject.removePot();
-        assertEquals(CoffeePot.MAX_CAPACITY_CUPS, subject.cupsOfCoffee());
-        assertEquals(CoffeePot.MAX_CAPACITY_CUPS, actualPot.cupsOfCoffee());
+        assertEquals(props.getPotMaxCapacityCups(), subject.cupsOfCoffee());
+        assertEquals(props.getPotMaxCapacityCups(), actualPot.cupsOfCoffee());
         assertTrue(actualPot.isFull());
     }
 
     @Test
     void testFullBrewWithExtraTicks() {
         // When
+        int fillLvl = props.getPotMaxCapacityCups() + WaterReservoir.COFFEE_POT_MAX_CAPACITY_OFFSET;
         clock.tick();
         clock.tick();
-        subject.fill(CoffeePot.MAX_CAPACITY_CUPS);
+        subject.fill(fillLvl);
 
         clock.tick();
         clock.tick();
@@ -68,7 +89,7 @@ class BasicCoffeeMakerTests {
         clock.tick();
 
         // + 5 in order to avoid any lag time in state propagation to various components
-        for (int i = 0; i < CoffeePot.MAX_CAPACITY_CUPS + 5; i++) {
+        for (int i = 0; i < fillLvl + 5; i++) {
             clock.tick();
         }
 
@@ -78,20 +99,21 @@ class BasicCoffeeMakerTests {
         assertTrue(subject.isWarmerPlateOn());
 
         CoffeePot actualPot = subject.removePot();
-        assertEquals(CoffeePot.MAX_CAPACITY_CUPS, subject.cupsOfCoffee());
-        assertEquals(CoffeePot.MAX_CAPACITY_CUPS, actualPot.cupsOfCoffee());
+        assertEquals(props.getPotMaxCapacityCups(), subject.cupsOfCoffee());
+        assertEquals(props.getPotMaxCapacityCups(), actualPot.cupsOfCoffee());
         assertTrue(actualPot.isFull());
     }
 
     @Test
     void testBrewMoreWaterThanPotCanHold() {
         // When
+        int fillLvl = props.getPotMaxCapacityCups() + WaterReservoir.COFFEE_POT_MAX_CAPACITY_OFFSET;
         int extraCupsOfWater = 5;
-        subject.fill(CoffeePot.MAX_CAPACITY_CUPS + extraCupsOfWater);
+        subject.fill(fillLvl + extraCupsOfWater);
         subject.pressBrewButton();
 
         // + 5 in order to avoid any lag time in state propagation to various components
-        for (int i = 0; i < CoffeePot.MAX_CAPACITY_CUPS + extraCupsOfWater + 5; i++) {
+        for (int i = 0; i < fillLvl + extraCupsOfWater + 5; i++) {
             clock.tick();
         }
 
@@ -103,20 +125,22 @@ class BasicCoffeeMakerTests {
         assertFalse(subject.isBrewing());
 
         CoffeePot actualPot = subject.removePot();
-        assertEquals(CoffeePot.MAX_CAPACITY_CUPS, subject.cupsOfCoffee());
-        assertEquals(CoffeePot.MAX_CAPACITY_CUPS, actualPot.cupsOfCoffee());
+        assertEquals(props.getPotMaxCapacityCups(), subject.cupsOfCoffee());
+        assertEquals(props.getPotMaxCapacityCups(), actualPot.cupsOfCoffee());
         assertTrue(actualPot.isFull());
     }
 
     @Test
     void testOverFillEmptyCoffeeMaker() {
+        int fillLvl = props.getPotMaxCapacityCups() + WaterReservoir.COFFEE_POT_MAX_CAPACITY_OFFSET;
         assertThrows(IllegalArgumentException.class,
-                () -> subject.fill(WaterReservoir.MAX_CAPACITY_CUPS + 5)); // Fill beyond capacity
+                () -> subject.fill(fillLvl + 5)); // Fill beyond capacity
     }
 
     @Test
     void testOverFillPartiallyFilledCoffeeMaker() {
-        subject.fill(WaterReservoir.MAX_CAPACITY_CUPS - 5); // Partially fill
+        int fillLvl = props.getPotMaxCapacityCups() + WaterReservoir.COFFEE_POT_MAX_CAPACITY_OFFSET;
+        subject.fill(fillLvl - 5); // Partially fill
         
         assertThrows(IllegalArgumentException.class,
                 () -> subject.fill(6)); // Fill beyond capacity

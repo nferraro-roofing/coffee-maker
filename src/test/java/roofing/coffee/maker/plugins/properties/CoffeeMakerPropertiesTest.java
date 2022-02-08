@@ -19,7 +19,7 @@ class CoffeeMakerPropertiesTest {
         // Given
         Clock clock = new Clock(1, TimeUnit.SECONDS);
         Pot pot = new Pot(1);
-        Reservoir reservoir = new Reservoir(1, 1);
+        Reservoir reservoir = new Reservoir(1);
         WarmerPlate warmerPlate = new WarmerPlate(1);
 
         // When
@@ -32,11 +32,10 @@ class CoffeeMakerPropertiesTest {
         assertEquals(1, subject.getPotMaxCapacityCups());
         assertEquals(60, subject.getReservoirTicksPerCupBrewed());
         assertEquals(60, subject.getWarmerPlateStayHotForTickLimit());
-        assertEquals(2, subject.getReservoirMaxCapacityCups());
     }
 
     @Test
-    void testClockCreateClockWithBadTickDelay() {
+    void testCreateClockWithBadTickDelay() {
         // Given
         long tickDelay = -9223372036854775807L; // Invalid
         TimeUnit timeUnit = TimeUnit.SECONDS;
@@ -46,13 +45,32 @@ class CoffeeMakerPropertiesTest {
                 assertThrows(InvalidClockTickDelayPropertyException.class,
                         () -> new Clock(tickDelay, timeUnit));
         assertEquals(
-                "A coffee maker's clock tick rate is required and must be > 0. The provided value was -9223372036854775807. Please correct this value and re-start the application.",
+                "A coffee maker's clock tick rate is required and must be > 0. The "
+                        + "provided value was -9223372036854775807. Please correct this value "
+                        + "and re-start the application.",
+                thrown.getMessage());
+    }
+
+    @Test
+    void testCreateClockWithFewerThanOneTickPerSecond() {
+        // Given tick rate of .6 per second - less than 1 tick per minute
+        long tickDelay = 100;
+        TimeUnit timeUnit = TimeUnit.SECONDS;
+
+        // When & Then
+        InvalidClockTicksPerMinuteException thrown =
+                assertThrows(InvalidClockTicksPerMinuteException.class,
+                        () -> new Clock(tickDelay, timeUnit));
+        assertEquals("The provided combination of 100 tickDelay and SECONDS "
+                + "delayUnit resulted in fewer than 1 tick per minute, but a coffee maker's "
+                + "clock must tick at least once per minute. Please adjust these parameters "
+                + "in order to increase the clock's tick rate.",
                 thrown.getMessage());
     }
 
     @ParameterizedTest
     @EnumSource(value = TimeUnit.class, names = {"MINUTES", "HOURS", "DAYS"})
-    void testClockCreateClockWithBadTimeUnit(TimeUnit timeUnit) {
+    void testCreateClockWithBadTimeUnit(TimeUnit timeUnit) {
         // Given
         long tickDelay = 1; // Valid
 
@@ -61,15 +79,15 @@ class CoffeeMakerPropertiesTest {
                 assertThrows(InvalidClockTimeUnitPropertyException.class,
                         () -> new Clock(tickDelay, timeUnit));
         assertEquals(
-                "A coffee maker's clock time unit must be no coarser than TimeUnit.SECONDS. The provided TimeUnit was "
-                        + timeUnit
+                "A coffee maker's clock time unit must be no coarser than TimeUnit.SECONDS. The "
+                        + "provided TimeUnit was " + timeUnit
                         + ". Please correct this property value and re-start the application.",
                 thrown.getMessage());
     }
 
     @ParameterizedTest
     @EnumSource(value = TimeUnit.class, names = {"NANOSECONDS", "MICROSECONDS", "SECONDS"})
-    void testClockCreateClockWithGoodTimeUnit(TimeUnit timeUnit) {
+    void testCreateClockWithGoodTimeUnit(TimeUnit timeUnit) {
         // Given
         long tickDelay = 1; // Valid
 

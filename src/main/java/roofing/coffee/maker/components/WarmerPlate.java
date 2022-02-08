@@ -5,7 +5,12 @@ import roofing.coffee.maker.busses.BusMessage;
 
 public class WarmerPlate implements BusComponent<WarmerPlate> {
 
-    private final long stayHotTickLimit;
+    // This member comes from an app setting (see CoffeeMakerProperties and CoffeeMakerCreator).
+    // Therefore, it should be final. However, instances of WarmerPlate that are intended for use
+    // a BusMessage won't know this value (see busMessageInstance()). As a result, the only way
+    // for such instances to know about this value is from other instances post-creation time in
+    // refreshFrom() - thus preventing this value from being final.
+    private long stayHotTickLimit;
 
     private int cyclesAfterBrewStopped = 0;
     private boolean hasPot = true;
@@ -47,6 +52,7 @@ public class WarmerPlate implements BusComponent<WarmerPlate> {
     public void refreshFrom(WarmerPlate other) {
         this.hasPot = other.hasPot();
         this.isHot = other.isHot();
+        this.stayHotTickLimit = other.stayHotTickLimit;
         // No need to refresh cyclesAfterBrewStopped because this information is not important in a
         // bus message. It's an internal-only value.
     }

@@ -14,9 +14,9 @@ import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.WarmerPlate
 /**
  * WaterReservoirPropertiesTest aims to test settings that affect the WaterReservoir's brew rate.
  * 
- * This test class primarily differentiates between parameters that work together to not waste clock
- * cycles and parameters that do "waste" clock cycles - respectively referred to as evenly divisible
- * parameters and NOT evenly divisible parameters.
+ * This test class primarily differentiates between parameters that work together to not "waste"
+ * clock cycles and parameters that do "waste" clock cycles - respectively referred to as evenly
+ * divisible parameters and NOT evenly divisible parameters.
  * 
  * For example, a clock with clockTickRate of 1 and TimUnit.SECONDS will tick 60 times per minute,
  * thus utilizing all 60 ticks evenly. If the WaterReservoir's cupsPerMinuteBrewRate is 2, then we
@@ -66,42 +66,46 @@ class WaterReservoirBrewRateTest {
         assertEquals(expectedTickPerCup, subject.getReservoirTicksPerCupBrewed());
     }
 
-    void testClockTicksSlowerThanOneCupPerMinute() {}
-
-    // TODO: tick rate of clock very slow - slower than once per minute?
-    // TODO: assertEquals(2, subject.getReservoirMaxCapacityCups());
-
-
     static Stream<Arguments> provideEvenlyDivisibleParameters() {
-        // TODO: comment and format like the NOT even provider
-        return Stream.of(Arguments.of(1, TimeUnit.NANOSECONDS, 4, 15000000000L),
-                Arguments.of(1, TimeUnit.MICROSECONDS, 3, 20000000),
+        return Stream.of(
+                // 600000000 ticks / minute & 4 cups / min brew rate = 150000000 ticks / cup brewed
+                Arguments.of(100, TimeUnit.NANOSECONDS, 4, 150000000L),
+
+                // 1200000 ticks / minute & 3 cups / min brew rate = 400000 ticks / cup brewed
+                Arguments.of(50, TimeUnit.MICROSECONDS, 3, 400000),
+
+                // 6000 ticks / minute & 2 cups / min brew rate = 3000 ticks / cup brewed
                 Arguments.of(10, TimeUnit.MILLISECONDS, 2, 3000),
-                Arguments.of(5, TimeUnit.SECONDS, 1, 12));
+
+                // 12 ticks / minute & 1 cups / min brew rate = 12 ticks / cup brewed
+                Arguments.of(5, TimeUnit.SECONDS, 1, 12),
+
+                // 1 tick per second & 1 cup / min brew rate = 1 tick / cup brewed
+                Arguments.of(60, TimeUnit.SECONDS, 1, 1));
     }
 
     static Stream<Arguments> provideNotEvenlyDivisibleParameters() {
         return Stream.of(
-            // 6e10 ticks / second & 7 cups / min brew rate = 1714285714.29 ticks / cup brewed,
-            // then truncate
-            Arguments.of(5, TimeUnit.NANOSECONDS, 7, 1714285714L),
-                
-            // 6e7 ticks / second & 7 cups / min brew rate = 1714285.71429 ticks / cup brewed,
-            // then truncate
-            Arguments.of(5, TimeUnit.MICROSECONDS, 7, 1714285),
-                
-            // 6e4 ticks / second & 7 cups / min brew rate = 1714.2857 ticks / cup brewed, then
-            // truncate
-            Arguments.of(5, TimeUnit.MILLISECONDS, 7, 1714),
-                
-            // 12 ticks / second & 7 cups / min brew rate = 1.7142857 ticks / cup brewed, then
-            // truncate
-            Arguments.of(5, TimeUnit.SECONDS, 7, 1));
+                // 6e10 ticks / minute & 7 cups / min brew rate = 1714285714.29 ticks / cup brewed,
+                // then truncate
+                Arguments.of(5, TimeUnit.NANOSECONDS, 7, 1714285714L),
+
+                // 6e7 ticks / minute & 7 cups / min brew rate = 1714285.71429 ticks / cup brewed,
+                // then truncate
+                Arguments.of(5, TimeUnit.MICROSECONDS, 7, 1714285),
+
+                // 6e4 ticks / minute & 7 cups / min brew rate = 1714.2857 ticks / cup brewed, then
+                // truncate
+                Arguments.of(5, TimeUnit.MILLISECONDS, 7, 1714),
+
+                // 12 ticks / minute & 7 cups / min brew rate = 1.7142857 ticks / cup brewed, then
+                // truncate
+                Arguments.of(5, TimeUnit.SECONDS, 7, 1));
     }
 
     /*
      * Create a CoffeeMakerProperties with parameters that affect
-     * CoffeeMakerProperties::getReservoirMaxCapacityCups
+     * CoffeeMakerProperties::getReservoirTicksPerCupBrewed
      */
     private CoffeeMakerProperties createProperties(long clockTickDelay,
             TimeUnit clockDelayUnit,
@@ -109,7 +113,7 @@ class WaterReservoirBrewRateTest {
 
         // We care about these
         Clock clock = new Clock(clockTickDelay, clockDelayUnit);
-        Reservoir reservoir = new Reservoir(1, cupsPerMinuteBrewRate);
+        Reservoir reservoir = new Reservoir(cupsPerMinuteBrewRate);
 
         // Dummy values here
         Pot pot = new Pot(1);
