@@ -6,10 +6,10 @@ import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.Clock;
-import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.Pot;
-import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.Reservoir;
-import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.WarmerPlate;
+import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.ClockProps;
+import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.PotProps;
+import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.ReservoirProps;
+import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.WarmerPlateProps;
 
 /**
  * WaterReservoirPropertiesTest aims to test settings that affect the WaterReservoir's brew rate.
@@ -112,12 +112,12 @@ class WaterReservoirBrewRateTest {
             int cupsPerMinuteBrewRate) {
 
         // We care about these
-        Clock clock = new Clock(clockTickDelay, clockDelayUnit);
-        Reservoir reservoir = new Reservoir(cupsPerMinuteBrewRate);
+        ClockProps clock = new ClockProps(clockTickDelay, clockDelayUnit);
+        ReservoirProps reservoir = new ReservoirProps(cupsPerMinuteBrewRate);
 
         // Dummy values here
-        Pot pot = new Pot(1);
-        WarmerPlate warmerPlate = new WarmerPlate(1);
+        PotProps pot = new PotProps(1);
+        WarmerPlateProps warmerPlate = new WarmerPlateProps(1);
 
         return new CoffeeMakerProperties(clock, pot, reservoir, warmerPlate);
     }

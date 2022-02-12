@@ -7,20 +7,20 @@ import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.Clock;
-import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.Pot;
-import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.Reservoir;
-import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.WarmerPlate;
+import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.ClockProps;
+import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.PotProps;
+import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.ReservoirProps;
+import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.WarmerPlateProps;
 
 class CoffeeMakerPropertiesTest {
 
     @Test
     void testHappyPath() {
         // Given
-        Clock clock = new Clock(1, TimeUnit.SECONDS);
-        Pot pot = new Pot(1);
-        Reservoir reservoir = new Reservoir(1);
-        WarmerPlate warmerPlate = new WarmerPlate(1);
+        ClockProps clock = new ClockProps(1, TimeUnit.SECONDS);
+        PotProps pot = new PotProps(1);
+        ReservoirProps reservoir = new ReservoirProps(1);
+        WarmerPlateProps warmerPlate = new WarmerPlateProps(1);
 
         // When
         CoffeeMakerProperties subject =
@@ -43,7 +43,7 @@ class CoffeeMakerPropertiesTest {
         // When & Then
         InvalidClockTickDelayPropertyException thrown =
                 assertThrows(InvalidClockTickDelayPropertyException.class,
-                        () -> new Clock(tickDelay, timeUnit));
+                        () -> new ClockProps(tickDelay, timeUnit));
         assertEquals(
                 "A coffee maker's clock tick rate is required and must be > 0. The "
                         + "provided value was -9223372036854775807. Please correct this value "
@@ -60,7 +60,7 @@ class CoffeeMakerPropertiesTest {
         // When & Then
         InvalidClockTicksPerMinuteException thrown =
                 assertThrows(InvalidClockTicksPerMinuteException.class,
-                        () -> new Clock(tickDelay, timeUnit));
+                        () -> new ClockProps(tickDelay, timeUnit));
         assertEquals("The provided combination of 100 tickDelay and SECONDS "
                 + "delayUnit resulted in fewer than 1 tick per minute, but a coffee maker's "
                 + "clock must tick at least once per minute. Please adjust these parameters "
@@ -77,7 +77,7 @@ class CoffeeMakerPropertiesTest {
         // When & Then
         InvalidClockTimeUnitPropertyException thrown =
                 assertThrows(InvalidClockTimeUnitPropertyException.class,
-                        () -> new Clock(tickDelay, timeUnit));
+                        () -> new ClockProps(tickDelay, timeUnit));
         assertEquals(
                 "A coffee maker's clock time unit must be no coarser than TimeUnit.SECONDS. The "
                         + "provided TimeUnit was " + timeUnit
@@ -92,7 +92,7 @@ class CoffeeMakerPropertiesTest {
         long tickDelay = 1; // Valid
 
         // When
-        new Clock(tickDelay, timeUnit);
+        new ClockProps(tickDelay, timeUnit);
 
         // Then - as long as the above line doesn't throw an exception, pass
         assertTrue(true);

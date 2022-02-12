@@ -20,6 +20,10 @@ public class CoffeeMaker {
         this.warmer = warmer;
     }
 
+    public int getMaxWaterCapacityCups() {
+        return reservoir.maxCapacityCups();
+    }
+
     public void fill(int cupsOfwater) {
         reservoir.fill(cupsOfwater);
     }

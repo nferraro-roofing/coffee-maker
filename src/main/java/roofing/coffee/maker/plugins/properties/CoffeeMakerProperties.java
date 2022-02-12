@@ -17,15 +17,15 @@ import java.util.concurrent.TimeUnit;
  */
 public final class CoffeeMakerProperties {
 
-    private final Clock clock;
-    private final Pot pot;
-    private final Reservoir reservoir;
-    private final WarmerPlate warmerPlate;
+    private final ClockProps clock;
+    private final PotProps pot;
+    private final ReservoirProps reservoir;
+    private final WarmerPlateProps warmerPlate;
 
-    public CoffeeMakerProperties(Clock clock,
-            Pot pot,
-            Reservoir reservoir,
-            WarmerPlate warmerPlate) {
+    public CoffeeMakerProperties(ClockProps clock,
+            PotProps pot,
+            ReservoirProps reservoir,
+            WarmerPlateProps warmerPlate) {
         this.clock = clock;
         this.pot = pot;
         this.reservoir = reservoir;
@@ -52,13 +52,13 @@ public final class CoffeeMakerProperties {
         return clock.ticksPerMinute * warmerPlate.stayHotDurationMinutes;
     }
 
-    public static class Clock {
+    public static class ClockProps {
 
         private final long tickDelay;
         private final TimeUnit delayUnit;
         private final long ticksPerMinute;
 
-        public Clock(long tickDelay, TimeUnit delayUnit) {
+        public ClockProps(long tickDelay, TimeUnit delayUnit) {
             assertTickDelay(tickDelay);
             assertTimeUnit(delayUnit);
 
@@ -92,29 +92,29 @@ public final class CoffeeMakerProperties {
         }
     }
 
-    public static class Pot {
+    public static class PotProps {
 
         private final int maxCapacityCups;
 
-        public Pot(int maxCapacityCups) {
+        public PotProps(int maxCapacityCups) {
             this.maxCapacityCups = maxCapacityCups;
         }
     }
 
-    public static class Reservoir {
+    public static class ReservoirProps {
 
         private final int cupsPerMinuteBrewRate;
 
-        public Reservoir(int cupsPerMinuteBrewRate) {
+        public ReservoirProps(int cupsPerMinuteBrewRate) {
             this.cupsPerMinuteBrewRate = cupsPerMinuteBrewRate;
         }
     }
 
-    public static class WarmerPlate {
+    public static class WarmerPlateProps {
 
         private final int stayHotDurationMinutes;
 
-        public WarmerPlate(int stayHotDurationMinutes) {
+        public WarmerPlateProps(int stayHotDurationMinutes) {
             this.stayHotDurationMinutes = stayHotDurationMinutes;
         }
     }

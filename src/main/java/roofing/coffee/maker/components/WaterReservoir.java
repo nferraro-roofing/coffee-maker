@@ -5,8 +5,7 @@ import roofing.coffee.maker.busses.BusMessage;
 
 public class WaterReservoir implements BusComponent<WaterReservoir> {
 
-    // Public so that tests can access me
-    public static final int COFFEE_POT_MAX_CAPACITY_OFFSET = 1;
+    private static final int COFFEE_POT_MAX_CAPACITY_OFFSET = 1;
 
     private final long ticksPerCupBrewed;
 
@@ -98,6 +97,10 @@ public class WaterReservoir implements BusComponent<WaterReservoir> {
 
     public boolean isBrewing() {
         return isBrewing;
+    }
+
+    public int maxCapacityCups() {
+        return maxCapacityCups;
     }
 
     public boolean isEmpty() {

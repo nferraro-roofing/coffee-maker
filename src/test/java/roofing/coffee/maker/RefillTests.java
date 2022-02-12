@@ -1,11 +1,18 @@
 package roofing.coffee.maker;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import roofing.coffee.maker.busses.Clock;
 import roofing.coffee.maker.busses.Clock.ClockBuilder;
 import roofing.coffee.maker.components.CoffeePot;
+import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties;
+import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.ClockProps;
+import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.PotProps;
+import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.ReservoirProps;
+import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.WarmerPlateProps;
 
 /**
  * TODO: complete docs
@@ -19,44 +26,57 @@ import roofing.coffee.maker.components.CoffeePot;
  */
 class RefillTests {
 
+    private static CoffeeMakerProperties props;
+
     private Clock clock;
     private CoffeeMaker subject;
+
+    @BeforeAll
+    static void initProps() {
+        ClockProps clock = new ClockProps(60L, TimeUnit.SECONDS);
+        PotProps pot = new PotProps(10);
+        ReservoirProps reservoir = new ReservoirProps(1);
+        WarmerPlateProps warmerPlate = new WarmerPlateProps(10);
+
+        // When
+        props = new CoffeeMakerProperties(clock, pot, reservoir, warmerPlate);
+    }
 
     @BeforeEach
     void initSubjectAndClock() {
         ClockBuilder clockBuilder = Clock.builder();
-        subject = CoffeeMakerCreator.create(clockBuilder);
+        subject = CoffeeMakerCreator.create(clockBuilder, props);
         clock = clockBuilder.build();
     }
 
     @Test
     void testFullReBrew() {
         // Fully fill the reservoir & brew all of the coffee
-        brew(CoffeePot.MAX_CAPACITY_CUPS);
-        assertFillLevel(0, CoffeePot.MAX_CAPACITY_CUPS, true);
+        brew(subject.getMaxWaterCapacityCups());
+        assertFillLevel(0, props.getPotMaxCapacityCups(), true);
 
         // Fully empty the pot
-        empty(CoffeePot.MAX_CAPACITY_CUPS);
+        empty(subject.getMaxWaterCapacityCups());
         assertFillLevel(0, 0, false);
 
         // Fully fill the reservoir & brew all of the coffee again
-        brew(CoffeePot.MAX_CAPACITY_CUPS);
-        assertFillLevel(0, CoffeePot.MAX_CAPACITY_CUPS, true);
+        brew(subject.getMaxWaterCapacityCups());
+        assertFillLevel(0, props.getPotMaxCapacityCups(), true);
     }
 
     @Test
     void testPartialReBrew() {
         // Fully fill the reservoir & brew all of the coffee
-        brew(CoffeePot.MAX_CAPACITY_CUPS);
-        assertFillLevel(0, CoffeePot.MAX_CAPACITY_CUPS, true);
+        brew(subject.getMaxWaterCapacityCups());
+        assertFillLevel(0, props.getPotMaxCapacityCups(), true);
 
         // Empty some of the coffee, but not all of it
         int partialPourCups = 5;
         empty(partialPourCups);
-        assertFillLevel(0, CoffeePot.MAX_CAPACITY_CUPS - partialPourCups, false);
+        assertFillLevel(0, props.getPotMaxCapacityCups() - partialPourCups, false);
 
         brew(partialPourCups);
-        assertFillLevel(0, CoffeePot.MAX_CAPACITY_CUPS, true);
+        assertFillLevel(0, props.getPotMaxCapacityCups(), true);
     }
 
     private void brew(int initialFill) {

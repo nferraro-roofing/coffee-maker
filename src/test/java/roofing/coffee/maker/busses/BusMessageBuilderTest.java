@@ -21,10 +21,10 @@ import roofing.coffee.maker.components.WaterReservoir;
  */
 class BusMessageBuilderTest {
 
-    private static final WaterReservoir reservoir = new WaterReservoir();
+    private static final WaterReservoir reservoir = new WaterReservoir(1, 1);
     private static final BrewButton button = new BrewButton();
-    private static final CoffeePot pot = new CoffeePot();
-    private static final WarmerPlate warmer = new WarmerPlate();
+    private static final CoffeePot pot = new CoffeePot(1, 1);
+    private static final WarmerPlate warmer = new WarmerPlate(1);
 
     /**
      * Return a stream of arguments for testBrewButtonNotSet().
