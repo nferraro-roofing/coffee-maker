@@ -10,16 +10,13 @@ Goal:
         - Latest release only
     - Report on unit test runs
 - TODO:
-    - Configure the yml in .github for build & deploy as github package
-        - Figure out authenticaion and distribution management
-        - Cleanup the build - warnings, build & deploy can just be deploy
+   - Add sources to the jar & fiddle with directories for de-lomboked stuff 
     - Build / deploy via maven wrapper instead of maven in the runner
     - Create a github site and see how my javadoc turns out
     - Create an actual site instead of just javadoc
     - Point my site to the "latest" release only
     - Display build status in readme & point readme to my site
     - Report on unit test runs in the site (or elsewhere?)
-    - Add sources to the jar & fiddle with directories for de-lomboked stuff
 - Resources:
     - See: https://github.com/awhitford/lombok.maven
     - https://pages.github.com/
@@ -51,7 +48,8 @@ Goal:
             * never added the concept of a coffee ground holder
         * CoffeePot, WarmerPlate, WaterReservoir's settings are not final due to the bus message thing
 * Tag as version 1 & release officially via github
-    * Cleanup old packages and such too
+    * Cleanup old packages, commits and such too
+    * Go over the other github features in my repo and see what I can add some polish to
 
 # The Mark IV Special Coffee Maker [Problem statement - taken from Uncle Bob's [article] (http://objectmentor.com/resources/articles/CoffeeMaker.pdf)]
 
