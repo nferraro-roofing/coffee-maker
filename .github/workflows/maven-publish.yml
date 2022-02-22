@@ -27,6 +27,6 @@ jobs:
         distribution: 'temurin'
 
     - name: Build & deploy with Maven # mvn deploy will run preceeding goals - test, compile, pacakge, etc
-      run: mvn -B deploy --file pom.xml -s $GITHUB_WORKSPACE/settings.xml
+      run: mvn -B deploy --file pom.xml
       env:
         GITHUB_TOKEN: ${{ github.token }}
