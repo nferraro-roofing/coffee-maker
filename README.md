@@ -10,7 +10,6 @@ Goal:
         - Latest release only
     - Report on unit test runs
 - TODO:
-   - Add sources to the jar & fiddle with directories for de-lomboked stuff 
     - Build / deploy via maven wrapper instead of maven in the runner
     - Create a github site and see how my javadoc turns out
     - Create an actual site instead of just javadoc

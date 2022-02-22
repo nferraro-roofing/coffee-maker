@@ -17,6 +17,9 @@ jobs:
       packages: write
 
     steps:
+    - name: test123
+      run: mvn --version
+    
     - name: Checkout repository
       uses: actions/checkout@v2
       
