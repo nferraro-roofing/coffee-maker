@@ -76,9 +76,22 @@
                     <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                    <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- 
-                Javadoc & attached sources related. Delombok is necessary 
-                for the javadoc plugin to function correctly.
+                Javadoc related. Delombok is necessary for the javadoc plugin to function correctly.
             --> 
             <plugin>
                 <groupId>org.projectlombok</groupId>
@@ -112,18 +125,6 @@
                             </goals>
                         </execution>
                 </executions>
-            </plugin>
-            <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <executions>
-                <execution>
-                <id>attach-sources</id>
-                    <goals>
-                        <goal>jar</goal>
-                    </goals>
-                </execution>
-            </executions>
             </plugin>
         </plugins>
     </build>
