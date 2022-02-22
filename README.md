@@ -10,9 +10,9 @@ Goal:
         - Latest release only
     - Report on unit test runs
 - TODO:
-    - POC of mvn deploy on local
     - Configure the yml in .github for build & deploy as github package
         - Figure out authenticaion and distribution management
+        - Cleanup the build - warnings, build & deploy can just be deploy
     - Build / deploy via maven wrapper instead of maven in the runner
     - Create a github site and see how my javadoc turns out
     - Create an actual site instead of just javadoc
@@ -50,6 +50,8 @@ Goal:
             * More granular brew rate than whole cups
             * never added the concept of a coffee ground holder
         * CoffeePot, WarmerPlate, WaterReservoir's settings are not final due to the bus message thing
+* Tag as version 1 & release officially via github
+    * Cleanup old packages and such too
 
 # The Mark IV Special Coffee Maker [Problem statement - taken from Uncle Bob's [article] (http://objectmentor.com/resources/articles/CoffeeMaker.pdf)]
 
