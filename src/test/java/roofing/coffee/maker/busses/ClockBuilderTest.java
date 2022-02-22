@@ -25,9 +25,9 @@ import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.WarmerPlate
 class ClockBuilderTest {
 
     static Stream<ClockBuilder> provideClockBuilders() {
-        ClockBuilder missingBus = Clock.builder().withBus(new Bus());
+        ClockBuilder missingBus = Clock.builder().bus(new Bus());
         ClockBuilder missingCoffeeMaker =
-                Clock.builder().withCoffeeMaker(createDummyCoffeeMaker());
+                Clock.builder().coffeeMaker(createDummyCoffeeMaker());
 
         return Stream.of(missingBus, missingCoffeeMaker);
     }
@@ -47,7 +47,7 @@ class ClockBuilderTest {
     @ParameterizedTest
     @MethodSource("provideClockBuilders")
     void testMisConfiguredClockBuilder(ClockBuilder subject) {
-        assertThrows(IllegalStateException.class, () -> subject.build());
+        assertThrows(NullPointerException.class, () -> subject.build());
     }
 
 }

@@ -1,36 +1,35 @@
 package roofing.coffee.maker.plugins.properties;
 
 import java.util.concurrent.TimeUnit;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
+import lombok.ToString;
 
 /**
  * CoffeeMakerSettings allows a front-end application that wraps a coffee make to configure the
- * coffee maker in a framework agnostic manner. Simply construct an instance of this class with all
+ * coffee maker in a framework-agnostic manner. Simply construct an instance of this class with all
  * of the configuration values required.
  * 
- * Though this class is framework agnostic, it works quite well with Spring and models Spring's
- * immutable <a
- * href="URL#https://docs.spring.io/spring-boot/docs/3.0.x/reference/html/features.html#features.external-config.typesafe-configuration-properties.constructor-binding>@ConfigurationProperties</a>
- * pattern.
+ * Though this class is framework-agnostic, it works quite well with Spring and models Spring's
+ * immutable <a href="https://docs.spring.io/spring-boot/docs/3.0.x/reference/html/features.html#features.external-config.typesafe-configuration-properties">@ConfigurationProperties</a> strategy.
  * 
  * @author nferraro-roofing
- *
  */
+@ToString(includeFieldNames = true)
+@AllArgsConstructor
 public final class CoffeeMakerProperties {
 
+    @NonNull
     private final ClockProps clock;
-    private final PotProps pot;
-    private final ReservoirProps reservoir;
-    private final WarmerPlateProps warmerPlate;
 
-    public CoffeeMakerProperties(ClockProps clock,
-            PotProps pot,
-            ReservoirProps reservoir,
-            WarmerPlateProps warmerPlate) {
-        this.clock = clock;
-        this.pot = pot;
-        this.reservoir = reservoir;
-        this.warmerPlate = warmerPlate;
-    }
+    @NonNull
+    private final PotProps pot;
+
+    @NonNull
+    private final ReservoirProps reservoir;
+
+    @NonNull
+    private final WarmerPlateProps warmerPlate;
 
     public long getClockTickDelay() {
         return clock.tickDelay;
@@ -44,14 +43,17 @@ public final class CoffeeMakerProperties {
         return pot.maxCapacityCups;
     }
 
+    @ToString.Include
     public long getReservoirTicksPerCupBrewed() {
         return clock.ticksPerMinute / reservoir.cupsPerMinuteBrewRate;
     }
 
+    @ToString.Include
     public long getWarmerPlateStayHotForTickLimit() {
         return clock.ticksPerMinute * warmerPlate.stayHotDurationMinutes;
     }
 
+    @ToString(includeFieldNames = true)
     public static class ClockProps {
 
         private final long tickDelay;
@@ -92,30 +94,21 @@ public final class CoffeeMakerProperties {
         }
     }
 
+    @ToString(includeFieldNames = true)
+    @AllArgsConstructor
     public static class PotProps {
-
         private final int maxCapacityCups;
-
-        public PotProps(int maxCapacityCups) {
-            this.maxCapacityCups = maxCapacityCups;
-        }
     }
 
+    @ToString(includeFieldNames = true)
+    @AllArgsConstructor
     public static class ReservoirProps {
-
         private final int cupsPerMinuteBrewRate;
-
-        public ReservoirProps(int cupsPerMinuteBrewRate) {
-            this.cupsPerMinuteBrewRate = cupsPerMinuteBrewRate;
-        }
     }
 
+    @ToString(includeFieldNames = true)
+    @AllArgsConstructor
     public static class WarmerPlateProps {
-
         private final int stayHotDurationMinutes;
-
-        public WarmerPlateProps(int stayHotDurationMinutes) {
-            this.stayHotDurationMinutes = stayHotDurationMinutes;
-        }
     }
 }

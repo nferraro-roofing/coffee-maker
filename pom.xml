@@ -15,9 +15,37 @@
         <maven.compiler.source>1.8</maven.compiler.source>
 
         <junit.version>5.8.2</junit.version>
+
+        <lombok.outputDirectory>${project.build.directory}/generated-sources/delombok</lombok.outputDirectory>
     </properties>
 
     <dependencies>
+        <!-- 
+            Logging. slf4j-api present at build scope with logback in test scope. 
+            This strategy enables apps using this library may provide their own 
+            implementation while still enabling logging during test-time.
+        -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.25</version>
+        </dependency>
+        <dependency> 
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.10</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Provided dependencies -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.22</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Non-logging related, test-scoped dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -47,7 +75,35 @@
                     <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
+            
+            <!-- 
+                Javadoc related. delombok is necessary for the javadoc plugin to function correctly.
+            --> 
+            <plugin>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok-maven-plugin</artifactId>
+                <version>1.18.20.0</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>delombok</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+                    <addOutputDirectory>false</addOutputDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.3.2</version>
+                <configuration>
+                    <sourcepath>${lombok.outputDirectory}</sourcepath>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
 </project>
