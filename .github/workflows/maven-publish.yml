@@ -31,6 +31,9 @@ jobs:
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
+    - name: test1234
+      run: mvn --version
+
     - name: Build & deploy with Maven # mvn deploy will run preceeding goals - test, compile, pacakge, etc
       run: mvn -B deploy --file pom.xml -s $GITHUB_WORKSPACE/settings.xml
       env:
