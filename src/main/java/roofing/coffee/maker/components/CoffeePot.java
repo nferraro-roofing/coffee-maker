@@ -1,5 +1,8 @@
 package roofing.coffee.maker.components;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import lombok.ToString;
 import roofing.coffee.maker.busses.BusComponent;
 import roofing.coffee.maker.busses.BusMessage;
 
@@ -31,16 +34,18 @@ import roofing.coffee.maker.busses.BusMessage;
  * @author nferraro-roofing
  *
  */
+@ToString(includeFieldNames = true)
 public class CoffeePot implements BusComponent<CoffeePot> {
 
-    // These members come from app settings (see CoffeeMakerProperties and CoffeeMakerCreator).
-    // Therefore, they should be final. However, instances of CoffeePot that are intended for use
-    // a BusMessage won't know these values (see busMessageInstance()). As a result, the only way
-    // for such instances to know about this value is from other instances post-creation time in
-    // refreshFrom() - thus preventing these values from being final.
+    private static final Logger LOG = LoggerFactory.getLogger(CoffeePot.class);
+
+    // maxCapacityCups and ticksPerCupBrewed are settings (see CoffeeMakerProperties and
+    // CoffeeMakerCreator). Therefore, it should be final. However, instances of WarmerPlate
+    // that are intended for use a BusMessage won't know this value (see busMessageInstance()).
+    // As a result, the only way for such instances to know about this value is from other
+    // instances post-creation time in refreshFrom() - thus preventing this value from being final.
     private int maxCapacityCups;
     private long ticksPerCupBrewed;
-
     private int cupsOfCoffee = 0;
     private long ticksSinceLastCupBrewed = 0;
 
@@ -69,6 +74,10 @@ public class CoffeePot implements BusComponent<CoffeePot> {
         WaterReservoir waterReservoir = message.getReservoir();
 
         if (waterReservoir.isBrewing()) {
+            LOG.trace("Increment pot's clock tick counter ({}) by 1. Ticks required to reset "
+                    + "and brew a cup of coffee: {}",
+                    ticksSinceLastCupBrewed,
+                    maxCapacityCups);
             ticksSinceLastCupBrewed++;
 
             if (ticksSinceLastCupBrewed == ticksPerCupBrewed) {
@@ -76,6 +85,9 @@ public class CoffeePot implements BusComponent<CoffeePot> {
                 int nextCupsOfCoffee = cupsOfCoffee + 1;
 
                 if (nextCupsOfCoffee <= maxCapacityCups) {
+                    LOG.debug("Brewed a cup of coffee! The coffee pot's current level is now {}",
+                            nextCupsOfCoffee);
+
                     cupsOfCoffee = nextCupsOfCoffee;
                 }
             }
@@ -101,6 +113,7 @@ public class CoffeePot implements BusComponent<CoffeePot> {
 
     public void pourOutCoffee(int cups) {
         cupsOfCoffee = cups >= cupsOfCoffee ? 0 : cupsOfCoffee - cups;
+        LOG.debug("Pouring out {} cups of coffee from the pot. New cups: {}", cups, cupsOfCoffee);
     }
 
     public int cupsOfCoffee() {

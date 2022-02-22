@@ -1,18 +1,16 @@
 package roofing.coffee.maker.busses;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 import roofing.coffee.maker.components.BrewButton;
 import roofing.coffee.maker.components.CoffeePot;
 import roofing.coffee.maker.components.WarmerPlate;
 import roofing.coffee.maker.components.WaterReservoir;
 
-/**
- * Please do NOT override equals and hashcode unless we also update bus. We very much intend for
- * equals() to check instance vs instance. For this reason, we have explicitly overriden equals and
- * hashcode but merely call the super class - Object
- * 
- * @author nferraro-roofing
- *
- */
+@ToString(includeFieldNames = true)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class BusMessage {
 
     private static final BusMessageBuilder BUILDER = new BusMessageBuilder();
@@ -22,36 +20,17 @@ public class BusMessage {
         return BUILDER; 
     }
 
+    @Getter
     private final WaterReservoir reservoir;
+
+    @Getter
     private final BrewButton button;
+
+    @Getter
     private final CoffeePot pot;
+
+    @Getter
     private final WarmerPlate warmer;
-
-    private BusMessage(WaterReservoir reservoir,
-            BrewButton button,
-            CoffeePot pot,
-            WarmerPlate warmer) {
-        this.reservoir = reservoir;
-        this.button = button;
-        this.pot = pot;
-        this.warmer = warmer;
-    }
-
-    public WaterReservoir getReservoir() {
-        return reservoir;
-    }
-
-    public BrewButton getButton() {
-        return button;
-    }
-
-    public CoffeePot getPot() {
-        return pot;
-    }
-
-    public WarmerPlate getWarmer() {
-        return warmer;
-    }
 
     /**
      * Use the builder to enable the coffee maker to communicate its current state without putting
@@ -67,7 +46,7 @@ public class BusMessage {
      */
     public static class BusMessageBuilder {
 
-        // TODO: this approach is not thread safe unless we make a new BusMessageBuilder each
+        // This approach is not thread safe unless we make a new BusMessageBuilder each
         // time we need one, but that defeats the whole purpose. Need some locking mechanism
         private final WaterReservoir reservoir = WaterReservoir.busMessageInstance();
         private final BrewButton button = new BrewButton();

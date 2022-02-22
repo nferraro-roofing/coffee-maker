@@ -1,11 +1,17 @@
 package roofing.coffee.maker.components;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import lombok.ToString;
 import roofing.coffee.maker.busses.BusComponent;
 import roofing.coffee.maker.busses.BusMessage;
 
+@ToString(includeFieldNames = true)
 public class WarmerPlate implements BusComponent<WarmerPlate> {
 
-    // This member comes from an app setting (see CoffeeMakerProperties and CoffeeMakerCreator).
+    private static final Logger LOG = LoggerFactory.getLogger(WarmerPlate.class);
+
+    // stayHotTickLimit is an app setting (see CoffeeMakerProperties and CoffeeMakerCreator).
     // Therefore, it should be final. However, instances of WarmerPlate that are intended for use
     // a BusMessage won't know this value (see busMessageInstance()). As a result, the only way
     // for such instances to know about this value is from other instances post-creation time in
@@ -19,7 +25,7 @@ public class WarmerPlate implements BusComponent<WarmerPlate> {
     /**
      * Create an instance of a WarmerPlate to be used as within a bus message.
      * 
-     * @return a WarmerPlate inteded for use within a BusMessage.
+     * @return a WarmerPlate intended for use within a BusMessage.
      */
     public static WarmerPlate busMessageInstance() {
         return new WarmerPlate();
@@ -46,6 +52,10 @@ public class WarmerPlate implements BusComponent<WarmerPlate> {
         } else if (cyclesAfterBrewStopped < stayHotTickLimit) {
             cyclesAfterBrewStopped++;
         }
+
+        LOG.trace("WarmerPlate after reading a BusMessage: isHot? {}, cyclesAfterBrewStopped? {}",
+                isHot,
+                cyclesAfterBrewStopped);
     }
 
     @Override

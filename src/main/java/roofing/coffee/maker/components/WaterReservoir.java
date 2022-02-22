@@ -1,21 +1,25 @@
 package roofing.coffee.maker.components;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import lombok.ToString;
 import roofing.coffee.maker.busses.BusComponent;
 import roofing.coffee.maker.busses.BusMessage;
 
+@ToString(includeFieldNames = true)
 public class WaterReservoir implements BusComponent<WaterReservoir> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(WaterReservoir.class);
     private static final int COFFEE_POT_MAX_CAPACITY_OFFSET = 1;
 
     private final long ticksPerCupBrewed;
 
-    // This member comes from an app setting (see CoffeeMakerProperties and CoffeeMakerCreator).
-    // Therefore, it should be final. However, instances of WaterReservoir that are intended for use
+    // maxCapacityCups is an app setting (see CoffeeMakerProperties and CoffeeMakerCreator).
+    // Therefore, it should be final. However, instances of WarmerPlate that are intended for use
     // a BusMessage won't know this value (see busMessageInstance()). As a result, the only way
     // for such instances to know about this value is from other instances post-creation time in
     // refreshFrom() - thus preventing this value from being final.
     private int maxCapacityCups;
-
     private int cupsOfWater = 0;
     private boolean isBrewing = false;
     private long ticksSinceLastCupBrewed = 0;
@@ -48,6 +52,9 @@ public class WaterReservoir implements BusComponent<WaterReservoir> {
                 && !isEmpty();
 
         if (isBrewing) {
+            LOG.trace("Increment reservoir's clock tick counter ({}) by 1. Ticks required to reset "
+                    + "and remove a cup of water: {}", ticksSinceLastCupBrewed, ticksPerCupBrewed);
+
             ticksSinceLastCupBrewed++;
 
             if (ticksSinceLastCupBrewed == ticksPerCupBrewed) {
@@ -75,6 +82,9 @@ public class WaterReservoir implements BusComponent<WaterReservoir> {
     }
 
     public void fill(int cupsOfwater) {
+        LOG.debug("Filling the water reservoir with {} cups of water. Current level: {}",
+                cupsOfwater,
+                this.cupsOfWater);
         int nextCupsOfWater = this.cupsOfWater + cupsOfwater;
 
         if (nextCupsOfWater > maxCapacityCups) {
