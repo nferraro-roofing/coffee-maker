@@ -2,62 +2,33 @@ package roofing.coffee.maker.busses;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import lombok.Builder;
+import lombok.NonNull;
 import roofing.coffee.maker.CoffeeMaker;
 
+@Builder
 public class Clock {
 
+    private static final Logger LOG = LoggerFactory.getLogger(Clock.class);
+
+    @NonNull
     private final Bus bus;
+
+    @NonNull
     private final CoffeeMaker coffeeMaker;
 
-    public static ClockBuilder builder() {
-        return new ClockBuilder();
-    }
-
-    private Clock(Bus bus, CoffeeMaker coffeeMaker) {
-        this.bus = bus;
-        this.coffeeMaker = coffeeMaker;
-    }
-
     public void start(long period, TimeUnit periodUnit) {
+        LOG.debug("Clock starting with period {} and unit {}", period, periodUnit);
+
         Executors.newScheduledThreadPool(1)
                 .scheduleAtFixedRate(this::tick, 0, period, periodUnit);
     }
 
     public void tick() {
-        bus.update(coffeeMaker.asBusMessage());
-    }
-
-    public static class ClockBuilder {
-
-        private Bus bus;
-        private CoffeeMaker coffeeMaker;
-
-        public ClockBuilder withBus(Bus bus) {
-            this.bus = bus;
-            return this;
-        }
-
-        public ClockBuilder withCoffeeMaker(CoffeeMaker coffeeMaker) {
-            this.coffeeMaker = coffeeMaker;
-            return this;
-        }
-
-        public Clock build() {
-            if (bus == null) {
-                throw new IllegalStateException(
-                        "You've attempted to build a Clock without setting a Bus, but a Bus is "
-                                + "required to build a Clock. Please use withBus() to set the "
-                                + "bus for this Clock.");
-            }
-
-            if (coffeeMaker == null) {
-                throw new IllegalStateException(
-                        "You've attempted to build a Clock without setting a CoffeeMaker, but a "
-                                + "CoffeeMaker is required to build a Clock. Please use "
-                                + "withCoffeeMaker() to set the bus for this Clock.");
-            }
-
-            return new Clock(bus, coffeeMaker);
-        }
+        BusMessage message = coffeeMaker.asBusMessage();
+        LOG.trace("Clock ticking. Sending message to bus: {}", message);
+        bus.update(message);
     }
 }
