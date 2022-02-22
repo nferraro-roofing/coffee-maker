@@ -1,12 +1,35 @@
 Simple coffee maker implementation
 
+# TODO - CI/CD
+Goal:
+    - Configure github to build & deploy my artifacts to a github package
+    - Do so when I merge into main, or maybe at other points too
+    - Deploy the jar with sources
+    - Deploy with site.xml
+    - Create a github site that points to the artifact
+        - Latest release only
+    - Report on unit test runs
+- TODO:
+    - POC of mvn deploy on local
+    - Configure the yml in .github for build & deploy as github package
+        - Figure out authenticaion and distribution management
+    - Build / deploy via maven wrapper instead of maven in the runner
+    - Create a github site and see how my javadoc turns out
+    - Create an actual site instead of just javadoc
+    - Point my site to the "latest" release only
+    - Display build status in readme & point readme to my site
+    - Report on unit test runs in the site (or elsewhere?)
+    - Add sources to the jar & fiddle with directories for de-lomboked stuff
+- Resources:
+    - See: https://github.com/awhitford/lombok.maven
+    - https://pages.github.com/
+    - https://maven.apache.org/guides/mini/guide-site.html
+    - Publish javadoc as part of site generation: https://maven.apache.org/plugins/maven-javadoc-plugin/usage.html
+    
 # TODO - coffee maker proper
-* Javadoc & related
-    * genearted sources
-    * https://www.google.com/search?q=doccheck+maven+central&rlz=1C1ONGR_enUS973US973&oq=doccheck+maven+central&aqs=chrome..69i57j33i299l2.2745j0j7&sourceid=chrome&ie=UTF-8
-    * Write & Format javadoc and view how it actually turns out
-    * Document tests too
-* README
+* Complete javadocs
+* Complete site.xml
+* Complete readme
     * The low-memory, anit-GC approach with the BusMessage, builder, and BusComponent
     * Describe the framework agnostic nature of the settings
     * Describe what the settings do and how to use them & restrictions and such
@@ -14,27 +37,19 @@ Simple coffee maker implementation
     * Note improvements I want to make
     * Logging as a plugin. Test-time logging w/ defaults from logback-classic
     * Lombok plugin for IDE necessary to edit the code
-* Optional: deploy as site.xml to github page instead of just attaching the javadoc to the jar directly
-    * See: https://github.com/awhitford/lombok.maven
-    * https://pages.github.com/
-    * https://maven.apache.org/guides/mini/guide-site.html
-    * Ill need a nexus acct our some other artifact repo to publish to
-    * And publish javadoc as part of site generation https://maven.apache.org/plugins/maven-javadoc-plugin/usage.html
-
-
-# Improvements I want to make:
-* Use of modules via java9 - https://www.oracle.com/corporate/features/understanding-java-9-modules.html
-    * This would allow me to export only CoffeeMaker rather than everything, while also allowing me to organize my packages in a readable, discover-able manner
-    * I would export CoffeeMaker, CoffeeMakerCreator, and BrewButton only
-    * I would also make CoffeeMaker::currentState visible only within the roofing.coffee.maker.* package if that's possible
-    * I could solve all of this by plopping everything into once package. This isn't a bad idea, but I like very small packages
-    * BrewButton internal state could probably use booleans instead of an enum
-    * Thread-safety in BusMessageBuilder & it maybe is over-engineered
-    * CoffeeMaker has a one-way state diagram; there's no way to reset it - i.e clean it and re-use it tomorrow
-    * It would be cool to make the coffee maker sensitive to the clock and reset itself after 30 minutes or something - like a real coffe maker
-    * More granular brew rate than whole cups
-    * never added the concept of a coffee ground holder
-* CoffeePot, WarmerPlate, WaterReservoir's settings are not final due to the bus message thing
+    * Improvements I want to make:
+        * Use of modules via java9 - https://www.oracle.com/corporate/features/understanding-java-9-modules.html
+            * This would allow me to export only CoffeeMaker rather than everything, while also allowing me to organize my packages in a readable, discover-able manner
+            * I would export CoffeeMaker, CoffeeMakerCreator, and BrewButton only
+            * I would also make CoffeeMaker::currentState visible only within the roofing.coffee.maker.* package if that's possible
+            * I could solve all of this by plopping everything into once package. This isn't a bad idea, but I like very small packages
+            * BrewButton internal state could probably use booleans instead of an enum
+            * Thread-safety in BusMessageBuilder & it maybe is over-engineered
+            * CoffeeMaker has a one-way state diagram; there's no way to reset it - i.e clean it and re-use it tomorrow
+            * It would be cool to make the coffee maker sensitive to the clock and reset itself after 30 minutes or something - like a real coffe maker
+            * More granular brew rate than whole cups
+            * never added the concept of a coffee ground holder
+        * CoffeePot, WarmerPlate, WaterReservoir's settings are not final due to the bus message thing
 
 # The Mark IV Special Coffee Maker [Problem statement - taken from Uncle Bob's [article] (http://objectmentor.com/resources/articles/CoffeeMaker.pdf)]
 

@@ -75,7 +75,6 @@
                     <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
-            
             <!-- 
                 Javadoc related. delombok is necessary for the javadoc plugin to function correctly.
             --> 
@@ -106,4 +105,12 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/nferraro-roofing/coffee-maker</url>
+        </repository>
+    </distributionManagement>
 </project>
