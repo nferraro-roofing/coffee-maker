@@ -20,6 +20,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
       
+    - name: test123
+      run: pwd
+      
     - name: Set up JDK 8
       uses: actions/setup-java@v2
       with:
@@ -29,6 +32,6 @@ jobs:
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
     - name: Build & deploy with Maven # mvn deploy will run preceeding goals - test, compile, pacakge, etc
-      run: ./mvnw -B deploy --file pom.xml -s $GITHUB_WORKSPACE/settings.xml
+      run: $GITHUB_WORKSPACE/mvnw -B deploy --file pom.xml -s $GITHUB_WORKSPACE/settings.xml
       env:
         GITHUB_TOKEN: ${{ github.token }}
