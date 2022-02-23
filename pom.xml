@@ -68,11 +68,19 @@
 
     <build>
         <plugins>
-            <plugin>
+            <!-- 
+                The maven-wrapper-plugin is not bound to any goal, so it only runs via 
+                mvn wrapper:wrapper. Maven must be installed on the local machine runsning
+                this command. Do not run this unless changing the maven version that
+                builds this project. Google "Maven Wrapper" for more information.
+            -->
+            <plugin> 
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-wrapper-plugin</artifactId>
                 <version>3.1.0</version>
             </plugin>
+
+            <!-- General maven build related plugins - e.g. compiler version -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
@@ -81,10 +89,10 @@
                     <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.1</version>
                 <executions>
                     <execution>
                     <id>attach-sources</id>
