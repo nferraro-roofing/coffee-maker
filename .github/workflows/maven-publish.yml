@@ -39,7 +39,7 @@ jobs:
       run: |
          git config --global user.email "nick.g.ferraro@gmail.com"
          git config --global user.name $GITHUB_ACTOR
-         git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/nferraro-roofing/coffee-maker.git
+         git remote set-url origin https://nferraro-roofing:Awesome79&(1@github.com/nferraro-roofing/coffee-maker.git
          #git config --global url."https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/".pushInsteadOf "https://github.com/"
          git config --list
          $GITHUB_WORKSPACE/mvnw site
