@@ -37,6 +37,8 @@ jobs:
         
     - name: Create & publish site
       run: |
+         git config --global user.email "nick.g.ferraro@gmail.com"
+         git config --global user.name $GITHUB_ACTOR
          git config --global url."https://api:$GITHUB_TOKEN@github.com/".insteadOf "https://github.com/"
          git config --global url."https://ssh:$GITHUB_TOKEN@github.com/".insteadOf "ssh://git@github.com/"
          git config --global url."https://git:$GITHUB_TOKEN@github.com/".insteadOf "git@github.com:"
