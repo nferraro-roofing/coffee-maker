@@ -6,13 +6,42 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>coffee-maker</name>
-    <url>http://maven.apache.org</url>
+    <name>Coffee Maker</name>
+    <description>
+        JAR that mimics a coffee maker. Inspired by Uncle Bob's original 
+        coffee maker problem: https://flylib.com/books/en/4.444.1.119/1/
+    </description>
+    <inceptionYear>2022</inceptionYear>
+    <url>https://github.com/nferraro-roofing/coffee-maker</url>
+
+    <developers>
+        <developer>
+            <id>nferraro-roofing</id>
+            <name>Nicholas Ferraro</name>
+            <email>nick.g.ferraro@gmail.com</email>
+            <url>https://github.com/nferraro-roofing</url>
+            <roles>
+                <role>Architect</role>
+                <role>Developer</role>
+            </roles>
+            <timezone>America/New_York</timezone>
+            <properties>
+                <picUrl>me.jpg</picUrl>
+            </properties>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/nferraro-roofing/coffee-maker/issues</url>
+    </issueManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
+
+        <maven.javadoc.plugin.version>3.3.2</maven.javadoc.plugin.version>
 
         <junit.version>5.8.2</junit.version>
 
@@ -68,6 +97,17 @@
 
     <build>
         <plugins>
+
+            <!-- 
+                Site plugin. Default version is 3.3, but that version appears to have
+                an odd NoClassDefFound exceptio - seemingly on every run of "mvn site".
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.8.2</version>
+            </plugin>
+
             <!-- 
                 The maven-wrapper-plugin is not bound to any goal, so it only runs via 
                 mvn wrapper:wrapper. Maven must be installed on the local machine runsning
@@ -105,7 +145,7 @@
 
             <!-- 
                 Javadoc related. Delombok is necessary for the javadoc plugin to function correctly.
-            --> 
+           
             <plugin>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok-maven-plugin</artifactId>
@@ -126,7 +166,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.3.2</version>
+                <version>${maven.javadoc.plugin.version}</version>
                 <configuration>
                     <sourcepath>${lombok.outputDirectory}</sourcepath>
                 </configuration>
@@ -138,15 +178,49 @@
                             </goals>
                         </execution>
                 </executions>
-            </plugin>
+            </plugin> -->
         </plugins>
     </build>
 
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven.javadoc.plugin.version}</version>
+                <configuration>
+                    <linksource>true</linksource>
+                    <sourcepath>${project.basedir}/src/main/java</sourcepath>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>javadoc</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+               <version>3.0.0-M5</version>
+            </plugin>
+        </plugins>
+    </reporting>
+
     <distributionManagement>
+        <downloadUrl>https://github.com/nferraro-roofing/coffee-maker/packages</downloadUrl>
+
         <repository>
             <id>github</id>
             <name>GitHub Packages</name>
             <url>https://maven.pkg.github.com/nferraro-roofing/coffee-maker</url>
         </repository>
+
+        <site>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://github.com/nferraro-roofing/coffee-maker/packages/</url>
+        </site>
     </distributionManagement>
 </project>

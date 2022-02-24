@@ -10,12 +10,14 @@ Goal:
         - Latest release only
     - Report on unit test runs
 - TODO:
-    - Build / deploy via maven wrapper instead of maven in the runner
-    - Create a github site and see how my javadoc turns out
-    - Create an actual site instead of just javadoc
+    - Create a maven site
+        - Understand the various reporting configurations a little better: https://maven.apache.org/plugins/maven-site-plugin/examples/configuring-reports.html
+        - Attach javadoc
+    - Create a github site
     - Point my site to the "latest" release only
     - Display build status in readme & point readme to my site
     - Report on unit test runs in the site (or elsewhere?)
+    - Point URL in the pom to the github website
 - Resources:
     - See: https://github.com/awhitford/lombok.maven
     - https://pages.github.com/
@@ -46,8 +48,10 @@ Goal:
             * More granular brew rate than whole cups
             * never added the concept of a coffee ground holder
         * CoffeePot, WarmerPlate, WaterReservoir's settings are not final due to the bus message thing
+        * Add maven-checkstyle-plugin, bug configure it to match my preferences. The idea is that others should be able to contribute without violating style checks
 * Tag as version 1 & release officially via github
     * Cleanup old packages, commits and such too
+    * Cleanup the downloadURL in the pom to point where I need it to point - likely using the version and such
     * Go over the other github features in my repo and see what I can add some polish to
 
 # The Mark IV Special Coffee Maker [Problem statement - taken from Uncle Bob's [article] (http://objectmentor.com/resources/articles/CoffeeMaker.pdf)]
