@@ -10,9 +10,6 @@ Goal:
         - Latest release only
     - Report on unit test runs
 - TODO:
-    - Create a maven site
-        - Understand the various reporting configurations a little better: https://maven.apache.org/plugins/maven-site-plugin/examples/configuring-reports.html
-        - Attach javadoc
     - Create a github site
     - Point my site to the "latest" release only
     - Display build status in readme & point readme to my site
@@ -25,6 +22,7 @@ Goal:
     - Publish javadoc as part of site generation: https://maven.apache.org/plugins/maven-javadoc-plugin/usage.html
     
 # TODO - coffee maker proper
+* Improve test coverage & bump coverage requirement to 95%, Compare eclipse to jacoco
 * Complete javadocs
 * Complete site.xml
 * Complete readme
@@ -35,6 +33,7 @@ Goal:
     * Note improvements I want to make
     * Logging as a plugin. Test-time logging w/ defaults from logback-classic
     * Lombok plugin for IDE necessary to edit the code
+    * Test coverage requirements - why not 100%?
     * Improvements I want to make:
         * Use of modules via java9 - https://www.oracle.com/corporate/features/understanding-java-9-modules.html
             * This would allow me to export only CoffeeMaker rather than everything, while also allowing me to organize my packages in a readable, discover-able manner
