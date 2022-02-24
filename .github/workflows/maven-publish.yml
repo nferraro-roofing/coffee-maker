@@ -37,7 +37,10 @@ jobs:
         
     - name: Create & publish site
       run: |
-         git config --global url."https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/".pushInsteadOf "https://github.com/"
+         git config --global url."https://api:$GITHUB_TOKEN@github.com/".insteadOf "https://github.com/"
+         git config --global url."https://ssh:$GITHUB_TOKEN@github.com/".insteadOf "ssh://git@github.com/"
+         git config --global url."https://git:$GITHUB_TOKEN@github.com/".insteadOf "git@github.com:"
+         #git config --global url."https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/".pushInsteadOf "https://github.com/"
          #git config --global url."https://api:$MY_GIT_TOKEN@github.com/".pushInsteadOf "https://github.com/"
          #https://github.com/nferraro-roofing/coffee-maker.git
          #https://username:password@github.com/username/repository.git
