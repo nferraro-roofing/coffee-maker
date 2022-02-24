@@ -35,7 +35,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ github.token }}
         
-    - name: Create & publish site
+    - name: Create & publish site2
       run: |
          git config --global user.email "nick.g.ferraro@gmail.com"
          git config --global user.name $GITHUB_ACTOR
