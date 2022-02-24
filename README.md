@@ -11,9 +11,9 @@ Goal:
     - Report on unit test runs
 - TODO:
     - Create a github site
-    - Point my site to the "latest" release only
-    - Display build status in readme & point readme to my site
-    - Report on unit test runs in the site (or elsewhere?)
+        - Automate the thing via my github workflow. I have this already staged locally
+    - Display build status and other do dads in readme & point readme to my site
+    - URLs: Try and understand / fix the URls here: file:///E:/Dev/Repos/coffee-maker/target/site/distribution-management.html
     - Point URL in the pom to the github website
 - Resources:
     - See: https://github.com/awhitford/lombok.maven

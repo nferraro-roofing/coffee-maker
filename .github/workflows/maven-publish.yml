@@ -34,3 +34,7 @@ jobs:
          $GITHUB_WORKSPACE/mvnw -B deploy --file pom.xml -s $GITHUB_WORKSPACE/settings.xml
       env:
         GITHUB_TOKEN: ${{ github.token }}
+        
+    - name: Publish site # mvn deploy will run preceeding goals - test, compile, pacakge, etc
+      run: |
+         $GITHUB_WORKSPACE/mvnw site:stage scm-publish:publish-scm

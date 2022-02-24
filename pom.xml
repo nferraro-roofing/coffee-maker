@@ -223,6 +223,14 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-publish-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <scmBranch>gh-pages</scmBranch>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -312,7 +320,7 @@
         <site>
             <id>github</id>
             <name>GitHub Packages</name>
-            <url>https://github.com/nferraro-roofing/coffee-maker/packages/</url>
+            <url>scm:gitgit@github.com:nferraro-roofing/coffee-maker.git</url>
         </site>
     </distributionManagement>
 </project>
