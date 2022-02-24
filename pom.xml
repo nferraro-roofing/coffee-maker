@@ -319,7 +319,7 @@
 
         <site>
             <id>github</id>
-            <name>GitHub Packages</name>
+            <name>GitHub</name>
             <url>scm:git:https://github.com/nferraro-roofing/coffee-maker.git</url>
         </site>
     </distributionManagement>
