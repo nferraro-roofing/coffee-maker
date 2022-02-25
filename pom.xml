@@ -320,7 +320,7 @@
         <site>
             <id>github</id>
             <name>GitHub</name>
-            <url>scm:git:git@github.com:nferraro-roofing/coffee-maker.git</url>
+            <url>scm:git:https://github.com/nferraro-roofing/coffee-maker.git</url>
         </site>
     </distributionManagement>
 </project>
