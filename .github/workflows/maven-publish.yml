@@ -37,8 +37,15 @@ jobs:
         
     - name: Create & publish site
       run: |
+         # The following two git configs enable usage of HTTPS urls for git in this workflow
+         
+         # Git requires a user.name or user.email. We use user.name + the $GITHUB_ACTOR in order
+         # to provide a 100% dynamic configuration rather than hard-coding a user or email.
          git config --global user.name $GITHUB_ACTOR
+         
+         # Pragmatically provide user/password via ${username}:${password} syntax  
          git config --global url."https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/".pushInsteadOf "https://github.com/"
+         
          $GITHUB_WORKSPACE/mvnw site
          $GITHUB_WORKSPACE/mvnw site:stage scm-publish:publish-scm
       env:
