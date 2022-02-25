@@ -1,25 +1,10 @@
-Simple coffee maker implementation
+[![build-and-publish](https://github.com/nferraro-roofing/coffee-maker/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/nferraro-roofing/coffee-maker/actions/workflows/maven-publish.yml) [![GitHub release (latest by date)](https://img.shields.io/github/v/release/nferraro-roofing/coffee-maker)](https://github.com/nferraro-roofing/coffee-maker/releases)
 
-# TODO - CI/CD
-Goal:
-    - Configure github to build & deploy my artifacts to a github package
-    - Do so when I merge into main, or maybe at other points too
-    - Deploy the jar with sources
-    - Deploy with site.xml
-    - Create a github site that points to the artifact
-        - Latest release only
-    - Report on unit test runs
-- TODO:
-    - Create a github site
-        - Automate the thing via my github workflow. I have this already staged locally
-    - Display build status and other do dads in readme & point readme to my site
-- Resources:
-    - See: https://github.com/awhitford/lombok.maven
-    - https://pages.github.com/
-    - https://maven.apache.org/guides/mini/guide-site.html
-    - Publish javadoc as part of site generation: https://maven.apache.org/plugins/maven-javadoc-plugin/usage.html
+Simple coffee maker implementation
     
 # TODO - coffee maker proper
+* Cleanup old packages, commits and such
+* Go over the other github features in my repo and see what I can add some polish to
 * Improve test coverage & bump coverage requirement to 95%, Compare eclipse to jacoco
 * Complete javadocs
 * Complete site.xml
@@ -47,9 +32,6 @@ Goal:
         * CoffeePot, WarmerPlate, WaterReservoir's settings are not final due to the bus message thing
         * Add maven-checkstyle-plugin, bug configure it to match my preferences. The idea is that others should be able to contribute without violating style checks
 * Tag as version 1 & release officially via github
-    * Cleanup old packages, commits and such too
-    * Cleanup the downloadURL in the pom to point where I need it to point - likely using the version and such
-    * Go over the other github features in my repo and see what I can add some polish to
 
 # The Mark IV Special Coffee Maker [Problem statement - taken from Uncle Bob's [article] (http://objectmentor.com/resources/articles/CoffeeMaker.pdf)]
 
