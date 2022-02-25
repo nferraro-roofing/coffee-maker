@@ -38,8 +38,8 @@ jobs:
     - name: Create & publish site
       run: |
          git config --global user.email "nick.g.ferrarogmail.com"
-         git config --global user.name nferraro-roofing
-         git config --global url."https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/".pushInsteadOf "https://github.com/"
+         git config --global user.name $GITHUB_ACTOR
+         git config --global url."https://$GITHUB_TOKEN@github.com/".pushInsteadOf "https://github.com/"
          $GITHUB_WORKSPACE/mvnw site
          $GITHUB_WORKSPACE/mvnw site:stage scm-publish:publish-scm
       env:
