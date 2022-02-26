@@ -15,8 +15,6 @@ import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.ReservoirPr
 import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.WarmerPlateProps;
 
 /**
- * TODO: complete docs
- * 
  * difference between this and real usage: normally, we don't allow clients of coffee-maker to use a
  * Bus directly; instead, we use the Clock to automatically update the Bus in a different thread.
  * However, we must control the bus here so that we can traverse known execution paths.
@@ -107,6 +105,4 @@ class RefillTests {
         // Reset the pot in case of subsequent re-fills and re-brews
         subject.replacePot();
     }
-
-    // TODO: Run test coverage
 }

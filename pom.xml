@@ -209,12 +209,30 @@
                         <configuration>
                             <rules>
                                 <rule>
+                                    <excludes>
+                                        <exclude>*Test</exclude>
+                                        <exclude>*Tests</exclude>
+                                    </excludes>
                                     <element>BUNDLE</element>
                                     <limits>
                                         <limit>
+                                            <!-- 
+                                                Complexity effectively means execution path coverage. 
+                                                It is the primary determinant for code coverage 
+                                            --> 
                                             <counter>COMPLEXITY</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.90</minimum>
+                                            <minimum>0.95</minimum>
+                                        </limit>
+                                        <limit>
+                                            <counter>CLASS</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>1.0</minimum>
+                                        </limit>
+                                        <limit>
+                                            <counter>METHOD</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>1.0</minimum>
                                         </limit>
                                     </limits>
                                 </rule>

@@ -3,9 +3,7 @@
 Simple coffee maker implementation
     
 # TODO - coffee maker proper
-* Cleanup old packages, commits and such
-* Go over the other github features in my repo and see what I can add some polish to
-* Improve test coverage & bump coverage requirement to 95%, Compare eclipse to jacoco
+* Change auto-build strategy: publish site only on release. regular build otherwise
 * Complete javadocs
 * Complete site.xml
 * Complete readme
@@ -29,6 +27,7 @@ Simple coffee maker implementation
             * It would be cool to make the coffee maker sensitive to the clock and reset itself after 30 minutes or something - like a real coffe maker
             * More granular brew rate than whole cups
             * never added the concept of a coffee ground holder
+            * Sonar lint as part of build
         * CoffeePot, WarmerPlate, WaterReservoir's settings are not final due to the bus message thing
         * Add maven-checkstyle-plugin, bug configure it to match my preferences. The idea is that others should be able to contribute without violating style checks
 * Tag as version 1 & release officially via github

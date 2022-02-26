@@ -12,9 +12,11 @@ import roofing.coffee.maker.components.WarmerPlate;
 import roofing.coffee.maker.components.WaterReservoir;
 
 /**
- * BusMessageTest tests portions of the BusMessageBuilder that other tests do not cover. The various
- * CoffeeMaker-oriented tests (roofing.coffee.maker.*Tests.java) cover happy-path scenarios;
- * therefore, this test class covers edge cases only.
+ * Tests for BusMessageTest logic in isolation.
+ * 
+ * Developers should stray away from such fine-grained tests unless certain execution paths are
+ * tricky to test from coarser-grained perspective. In general, please write tests from a
+ * feature-level perspective and use unit tests for edge cases or special cases only.
  * 
  * @author nferraro-roofing
  *

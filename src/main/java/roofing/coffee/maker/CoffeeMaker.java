@@ -1,11 +1,13 @@
 package roofing.coffee.maker;
 
+import lombok.ToString;
 import roofing.coffee.maker.busses.BusMessage;
 import roofing.coffee.maker.components.BrewButton;
 import roofing.coffee.maker.components.CoffeePot;
 import roofing.coffee.maker.components.WarmerPlate;
 import roofing.coffee.maker.components.WaterReservoir;
 
+@ToString
 public class CoffeeMaker {
 
     private final WaterReservoir reservoir;
