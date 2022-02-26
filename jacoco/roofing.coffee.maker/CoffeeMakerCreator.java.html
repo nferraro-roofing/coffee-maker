@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CoffeeMakerCreator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Coffee Maker</a> &gt; <a href="index.source.html" class="el_package">roofing.coffee.maker</a> &gt; <span class="el_source">CoffeeMakerCreator.java</span></div><h1>CoffeeMakerCreator.java</h1><pre class="source lang-java linenums">package roofing.coffee.maker;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import roofing.coffee.maker.busses.Bus;
+import roofing.coffee.maker.busses.Clock;
+import roofing.coffee.maker.busses.Clock.ClockBuilder;
+import roofing.coffee.maker.components.BrewButton;
+import roofing.coffee.maker.components.CoffeePot;
+import roofing.coffee.maker.components.WarmerPlate;
+import roofing.coffee.maker.components.WaterReservoir;
+import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties;
+
+/**
+ * A creator of CoffeeMaker instances.
+ * 
+ * CoffeeMakerCreator purposefully does not provide a default constructor. Doing so forces clients
+ * of this package to consider the ramifications of different Clocks. Clock speed and behavior which
+ * is non-trivial consideration and can affect the performance and correctness of a CoffeeMaker
+ * client.
+ * 
+ * @author nferraro-roofing
+ *
+ */
+public final class CoffeeMakerCreator {
+
+<span class="fc" id="L27">    private static final Logger LOG = LoggerFactory.getLogger(CoffeeMakerCreator.class);</span>
+
+    private CoffeeMakerCreator() { /* Disable construction */ }
+
+    public static final CoffeeMaker create(CoffeeMakerProperties properties) {
+<span class="fc" id="L32">        LOG.debug(&quot;Creating a coffee maker with properties {}&quot;, properties);</span>
+
+<span class="fc" id="L34">        ClockBuilder clockBuilder = Clock.builder();</span>
+<span class="fc" id="L35">        CoffeeMaker coffeeMaker = create(clockBuilder, properties);</span>
+<span class="fc" id="L36">        clockBuilder.build()</span>
+<span class="fc" id="L37">                    .start(properties.getClockTickDelay(), properties.getClockTickDelayUnit());</span>
+<span class="fc" id="L38">        return coffeeMaker;</span>
+    }
+
+    static final CoffeeMaker create(ClockBuilder clockBuilder, CoffeeMakerProperties properties) {
+<span class="fc" id="L42">        LOG.debug(&quot;Creating a coffee maker with clock builder {} and properties {}&quot;,</span>
+                clockBuilder,
+                properties);
+
+<span class="fc" id="L46">        WaterReservoir reservoir = new WaterReservoir(</span>
+<span class="fc" id="L47">                properties.getPotMaxCapacityCups(),</span>
+<span class="fc" id="L48">                properties.getReservoirTicksPerCupBrewed());</span>
+
+<span class="fc" id="L50">        CoffeePot pot = new CoffeePot(</span>
+<span class="fc" id="L51">                properties.getPotMaxCapacityCups(),</span>
+<span class="fc" id="L52">                properties.getReservoirTicksPerCupBrewed());</span>
+
+<span class="fc" id="L54">        BrewButton button = new BrewButton();</span>
+<span class="fc" id="L55">        WarmerPlate warmer = new WarmerPlate(properties.getWarmerPlateStayHotForTickLimit());</span>
+
+<span class="fc" id="L57">        Bus bus = new Bus(reservoir, button, pot, warmer);</span>
+<span class="fc" id="L58">        CoffeeMaker coffeeMaker = new CoffeeMaker(reservoir, button, pot, warmer);</span>
+
+<span class="fc" id="L60">        clockBuilder.bus(bus).coffeeMaker(coffeeMaker);</span>
+
+<span class="fc" id="L62">        return coffeeMaker;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

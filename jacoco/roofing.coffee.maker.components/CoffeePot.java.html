@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CoffeePot.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Coffee Maker</a> &gt; <a href="index.source.html" class="el_package">roofing.coffee.maker.components</a> &gt; <span class="el_source">CoffeePot.java</span></div><h1>CoffeePot.java</h1><pre class="source lang-java linenums">package roofing.coffee.maker.components;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import lombok.ToString;
+import roofing.coffee.maker.busses.BusComponent;
+import roofing.coffee.maker.busses.BusMessage;
+
+/**
+ * Like the WaterReservoir, the CoffeePot also relies on the clock in order to fill itself. However,
+ * there is a 1-cycle lag time between WaterReservoir.isBrewing() becoming true and the clock's next
+ * tick; thus, the CoffeePot will be 1 cycle behind until 1 cycle after brewing stops. E.g.
+ * 
+ * &lt;ol&gt;
+ * &lt;li&gt;Fill reservoir with 12 cups of water&lt;/li&gt;
+ * &lt;li&gt;Clock ticks. Reservoir contains 11 cups of water; coffee pot has 0 cups of coffee and has
+ * fallen behind by one tick.&lt;/li&gt;
+ * &lt;li&gt;Clock ticks again. Reservoir contains 10 cups of water; coffee pot has 1 cup of coffee.&lt;/li&gt;
+ * &lt;li&gt;Pause brew by removing the coffee pot or pressing the brew button.&lt;/li&gt;
+ * &lt;li&gt;Clock ticks again. Reservoir contains 10 cups of water; coffee pot has 2 cups of coffee. The
+ * pot caught up.&lt;/li&gt;
+ * &lt;li&gt;Resume brew.&lt;/li&gt;
+ * &lt;li&gt;Clock ticks again. Reservoir contains 9 cups of water; coffee pot has 2 cup of coffee, and
+ * has fallen behind again.&lt;/li&gt;
+ * &lt;/ol&gt;
+ * 
+ * This lag time occurs because the water reservoir must begin brewing in order for the pot to begin
+ * to fill. But the pot cannot know that the reservoir is brewing until the cycle after the
+ * reservoir begins brewing.
+ * 
+ * This lag time should be of no real-world consequence. Unit tests against a coffee maker must
+ * understand this lag time.
+ * 
+ * @author nferraro-roofing
+ *
+ */
+<span class="nc" id="L37">@ToString(includeFieldNames = true)</span>
+public class CoffeePot implements BusComponent&lt;CoffeePot&gt; {
+
+<span class="fc" id="L40">    private static final Logger LOG = LoggerFactory.getLogger(CoffeePot.class);</span>
+
+    // maxCapacityCups and ticksPerCupBrewed are settings (see CoffeeMakerProperties and
+    // CoffeeMakerCreator). Therefore, it should be final. However, instances of WarmerPlate
+    // that are intended for use a BusMessage won't know this value (see busMessageInstance()).
+    // As a result, the only way for such instances to know about this value is from other
+    // instances post-creation time in refreshFrom() - thus preventing this value from being final.
+    private int maxCapacityCups;
+    private long ticksPerCupBrewed;
+<span class="fc" id="L49">    private int cupsOfCoffee = 0;</span>
+<span class="fc" id="L50">    private long ticksSinceLastCupBrewed = 0;</span>
+
+    /**
+     * Create an instance of a CoffeePot to be used as within a bus message. This instance has no
+     * capacity.
+     * 
+     * @return a CoffeePot that has no capacity.
+     */
+    public static CoffeePot busMessageInstance() {
+<span class="fc" id="L59">        return new CoffeePot();</span>
+    }
+
+<span class="fc" id="L62">    public CoffeePot(int maxCapacityCups, long ticksPerCupBrewed) {</span>
+<span class="fc" id="L63">        this.maxCapacityCups = maxCapacityCups;</span>
+<span class="fc" id="L64">        this.ticksPerCupBrewed = ticksPerCupBrewed;</span>
+<span class="fc" id="L65">    }</span>
+
+<span class="fc" id="L67">    private CoffeePot() {</span>
+<span class="fc" id="L68">        maxCapacityCups = 0;</span>
+<span class="fc" id="L69">        ticksPerCupBrewed = 0;</span>
+<span class="fc" id="L70">    }</span>
+
+    @Override
+    public void readBusMessage(BusMessage message) {
+<span class="fc" id="L74">        WaterReservoir waterReservoir = message.getReservoir();</span>
+
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        if (waterReservoir.isBrewing()) {</span>
+<span class="fc" id="L77">            LOG.trace(&quot;Increment pot's clock tick counter ({}) by 1. Ticks required to reset &quot;</span>
+                    + &quot;and brew a cup of coffee: {}&quot;,
+<span class="fc" id="L79">                    ticksSinceLastCupBrewed,</span>
+<span class="fc" id="L80">                    maxCapacityCups);</span>
+<span class="fc" id="L81">            ticksSinceLastCupBrewed++;</span>
+
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">            if (ticksSinceLastCupBrewed == ticksPerCupBrewed) {</span>
+<span class="fc" id="L84">                ticksSinceLastCupBrewed = 0;</span>
+<span class="fc" id="L85">                int nextCupsOfCoffee = cupsOfCoffee + 1;</span>
+
+<span class="fc bfc" id="L87" title="All 2 branches covered.">                if (nextCupsOfCoffee &lt;= maxCapacityCups) {</span>
+<span class="fc" id="L88">                    LOG.debug(&quot;Brewed a cup of coffee! The coffee pot's current level is now {}&quot;,</span>
+<span class="fc" id="L89">                            nextCupsOfCoffee);</span>
+
+<span class="fc" id="L91">                    cupsOfCoffee = nextCupsOfCoffee;</span>
+                }
+<span class="fc" id="L93">            }</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        } else if (waterReservoir.isEmpty()) {</span>
+            // Only reset state if we have nothing else to brew. Otherwise, we
+            // want to be able to return to where we left off - e.g. resume
+            // brewing after use removed and replaced the coffee pot
+<span class="fc" id="L98">            ticksSinceLastCupBrewed = 0;</span>
+        }
+<span class="fc" id="L100">    }</span>
+
+    @Override
+    public void refreshFrom(CoffeePot other) {
+<span class="fc" id="L104">        this.cupsOfCoffee = other.cupsOfCoffee;</span>
+<span class="fc" id="L105">        this.maxCapacityCups = other.maxCapacityCups;</span>
+<span class="fc" id="L106">        this.ticksPerCupBrewed = other.ticksPerCupBrewed;</span>
+<span class="fc" id="L107">    }</span>
+
+    @Override
+    public void reset() {
+<span class="fc" id="L111">        this.cupsOfCoffee = 0;</span>
+<span class="fc" id="L112">    }</span>
+
+    public void pourOutCoffee(int cups) {
+<span class="fc bfc" id="L115" title="All 2 branches covered.">        cupsOfCoffee = cups &gt;= cupsOfCoffee ? 0 : cupsOfCoffee - cups;</span>
+<span class="fc" id="L116">        LOG.debug(&quot;Pouring out {} cups of coffee from the pot. New cups: {}&quot;, cups, cupsOfCoffee);</span>
+<span class="fc" id="L117">    }</span>
+
+    public int cupsOfCoffee() {
+<span class="fc" id="L120">        return cupsOfCoffee;</span>
+    }
+
+    public boolean isFull() {
+        // Should never be greater than, but it doesn't hurt to add the check here!
+<span class="fc bfc" id="L125" title="All 2 branches covered.">        return cupsOfCoffee &gt;= maxCapacityCups;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BusMessage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Coffee Maker</a> &gt; <a href="index.source.html" class="el_package">roofing.coffee.maker.busses</a> &gt; <span class="el_source">BusMessage.java</span></div><h1>BusMessage.java</h1><pre class="source lang-java linenums">package roofing.coffee.maker.busses;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
+import roofing.coffee.maker.components.BrewButton;
+import roofing.coffee.maker.components.CoffeePot;
+import roofing.coffee.maker.components.WarmerPlate;
+import roofing.coffee.maker.components.WaterReservoir;
+
+<span class="nc" id="L12">@ToString(includeFieldNames = true)</span>
+<span class="fc" id="L13">@AllArgsConstructor(access = AccessLevel.PRIVATE)</span>
+public class BusMessage {
+
+<span class="fc" id="L16">    private static final BusMessageBuilder BUILDER = new BusMessageBuilder();</span>
+    
+    public static BusMessageBuilder builder() {
+<span class="fc" id="L19">        BUILDER.reset();</span>
+<span class="fc" id="L20">        return BUILDER; </span>
+    }
+
+<span class="fc" id="L23">    @Getter</span>
+    private final WaterReservoir reservoir;
+
+<span class="fc" id="L26">    @Getter</span>
+    private final BrewButton button;
+
+<span class="fc" id="L29">    @Getter</span>
+    private final CoffeePot pot;
+
+<span class="fc" id="L32">    @Getter</span>
+    private final WarmerPlate warmer;
+
+    /**
+     * Use the builder to enable the coffee maker to communicate its current state without putting
+     * its actual components onto the bus. I.e. the bus should contain a value-copy of each
+     * component and not the actual instance.
+     * 
+     * The coffee maker or the BusMessage constructor could new up the copied components, but it
+     * feels cleaner to use a builder. I don't want anything to new up domain components except for
+     * components that are explicitly intended for that purpose.
+     * 
+     * @author nferraro-roofing
+     *
+     */
+<span class="fc" id="L47">    public static class BusMessageBuilder {</span>
+
+        // This approach is not thread safe unless we make a new BusMessageBuilder each
+        // time we need one, but that defeats the whole purpose. Need some locking mechanism
+<span class="fc" id="L51">        private final WaterReservoir reservoir = WaterReservoir.busMessageInstance();</span>
+<span class="fc" id="L52">        private final BrewButton button = new BrewButton();</span>
+<span class="fc" id="L53">        private final CoffeePot pot = CoffeePot.busMessageInstance();</span>
+<span class="fc" id="L54">        private final WarmerPlate warmer = WarmerPlate.busMessageInstance();</span>
+        
+<span class="fc" id="L56">        private boolean isReservoirSet = false;</span>
+<span class="fc" id="L57">        private boolean isButtonSet = false;</span>
+<span class="fc" id="L58">        private boolean isPotSet = false;</span>
+<span class="fc" id="L59">        private boolean isWarmerSet = false;</span>
+
+        public BusMessageBuilder withWaterReservoir(WaterReservoir reservoir) {
+<span class="fc" id="L62">            this.reservoir.refreshFrom(reservoir);</span>
+<span class="fc" id="L63">            isReservoirSet = true;</span>
+<span class="fc" id="L64">            return this;</span>
+        }
+
+        public BusMessageBuilder withBrewButton(BrewButton button) {
+<span class="fc" id="L68">            this.button.refreshFrom(button);</span>
+<span class="fc" id="L69">            isButtonSet = true;</span>
+<span class="fc" id="L70">            return this;</span>
+        }
+
+        public BusMessageBuilder withCoffeePot(CoffeePot pot) {
+<span class="fc" id="L74">            this.pot.refreshFrom(pot);</span>
+<span class="fc" id="L75">            isPotSet = true;</span>
+<span class="fc" id="L76">            return this;</span>
+        }
+
+        public BusMessageBuilder withWarmerPlate(WarmerPlate warmer) {
+<span class="fc" id="L80">            this.warmer.refreshFrom(warmer);</span>
+<span class="fc" id="L81">            isWarmerSet = true;</span>
+<span class="fc" id="L82">            return this;</span>
+        }
+
+        public BusMessage build() {
+<span class="fc" id="L86">            assertState();</span>
+<span class="fc" id="L87">            return new BusMessage(reservoir, button, pot, warmer);</span>
+        }
+
+        private void assertState() {
+<span class="fc bfc" id="L91" title="All 2 branches covered.">            if (!isReservoirSet) {</span>
+<span class="fc" id="L92">                throw new IllegalStateException(</span>
+                        &quot;A WaterReservoir is required to build a BusMessage,but none was &quot;
+                                + &quot;provided to this builder. Please call withWaterReservoir().&quot;);
+            }
+
+<span class="fc bfc" id="L97" title="All 2 branches covered.">            if (!isButtonSet) {</span>
+<span class="fc" id="L98">                throw new IllegalStateException(</span>
+                        &quot;A BrewButton is required to build a BusMessage,  but none was &quot;
+                                + &quot;provided to this builder. Please call withBrewButton().&quot;);
+            }
+
+<span class="fc bfc" id="L103" title="All 2 branches covered.">            if (!isPotSet) {</span>
+<span class="fc" id="L104">                throw new IllegalStateException(</span>
+                        &quot;A CoffeePot is required to build a BusMessage,  but none was &quot;
+                                + &quot;provided to this builder. Please call withCoffeePot().&quot;);
+            }
+
+<span class="fc bfc" id="L109" title="All 2 branches covered.">            if (!isWarmerSet) {</span>
+<span class="fc" id="L110">                throw new IllegalStateException(</span>
+                        &quot;A WarmerPlate is required to build a BusMessage,  but none was &quot;
+                                + &quot;provided to this builder. Please call withWarmerPlate().&quot;);
+            }
+<span class="fc" id="L114">        }</span>
+
+        private void reset() {
+<span class="fc" id="L117">            reservoir.reset();</span>
+<span class="fc" id="L118">            button.reset();</span>
+<span class="fc" id="L119">            pot.reset();</span>
+<span class="fc" id="L120">            warmer.reset();</span>
+
+<span class="fc" id="L122">            isReservoirSet = false;</span>
+<span class="fc" id="L123">            isButtonSet = false;</span>
+<span class="fc" id="L124">            isPotSet = false;</span>
+<span class="fc" id="L125">            isWarmerSet = false;</span>
+<span class="fc" id="L126">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

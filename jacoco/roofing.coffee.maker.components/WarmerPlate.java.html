@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WarmerPlate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Coffee Maker</a> &gt; <a href="index.source.html" class="el_package">roofing.coffee.maker.components</a> &gt; <span class="el_source">WarmerPlate.java</span></div><h1>WarmerPlate.java</h1><pre class="source lang-java linenums">package roofing.coffee.maker.components;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import lombok.ToString;
+import roofing.coffee.maker.busses.BusComponent;
+import roofing.coffee.maker.busses.BusMessage;
+
+<span class="nc" id="L9">@ToString(includeFieldNames = true)</span>
+public class WarmerPlate implements BusComponent&lt;WarmerPlate&gt; {
+
+<span class="fc" id="L12">    private static final Logger LOG = LoggerFactory.getLogger(WarmerPlate.class);</span>
+
+    // stayHotTickLimit is an app setting (see CoffeeMakerProperties and CoffeeMakerCreator).
+    // Therefore, it should be final. However, instances of WarmerPlate that are intended for use
+    // a BusMessage won't know this value (see busMessageInstance()). As a result, the only way
+    // for such instances to know about this value is from other instances post-creation time in
+    // refreshFrom() - thus preventing this value from being final.
+    private long stayHotTickLimit;
+
+<span class="fc" id="L21">    private int cyclesAfterBrewStopped = 0;</span>
+<span class="fc" id="L22">    private boolean hasPot = true;</span>
+<span class="fc" id="L23">    private boolean isHot = false;</span>
+
+    /**
+     * Create an instance of a WarmerPlate to be used as within a bus message.
+     * 
+     * @return a WarmerPlate intended for use within a BusMessage.
+     */
+    public static WarmerPlate busMessageInstance() {
+<span class="fc" id="L31">        return new WarmerPlate();</span>
+    }
+
+<span class="fc" id="L34">    public WarmerPlate(long stayHotTickLimit) {</span>
+<span class="fc" id="L35">        this.stayHotTickLimit = stayHotTickLimit;</span>
+<span class="fc" id="L36">    }</span>
+
+<span class="fc" id="L38">    private WarmerPlate() {</span>
+<span class="fc" id="L39">        this.stayHotTickLimit = 0;</span>
+<span class="fc" id="L40">    }</span>
+
+    @Override
+    public void readBusMessage(BusMessage message) {
+<span class="fc" id="L44">        boolean reservoirIsBrewing = message.getReservoir().isBrewing();</span>
+
+        // &lt; instead of &lt;= because WarmerPlate naturally has a 1-tick lag time after brewing stops
+<span class="fc bfc" id="L47" title="All 4 branches covered.">        isHot = reservoirIsBrewing || cyclesAfterBrewStopped &lt; stayHotTickLimit;</span>
+
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (reservoirIsBrewing) {</span>
+<span class="fc" id="L50">            cyclesAfterBrewStopped = 0;</span>
+
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        } else if (cyclesAfterBrewStopped &lt; stayHotTickLimit) {</span>
+<span class="fc" id="L53">            cyclesAfterBrewStopped++;</span>
+        }
+
+<span class="fc" id="L56">        LOG.trace(&quot;WarmerPlate after reading a BusMessage: isHot? {}, cyclesAfterBrewStopped? {}&quot;,</span>
+<span class="fc" id="L57">                isHot,</span>
+<span class="fc" id="L58">                cyclesAfterBrewStopped);</span>
+<span class="fc" id="L59">    }</span>
+
+    @Override
+    public void refreshFrom(WarmerPlate other) {
+<span class="fc" id="L63">        this.hasPot = other.hasPot();</span>
+<span class="fc" id="L64">        this.isHot = other.isHot();</span>
+<span class="fc" id="L65">        this.stayHotTickLimit = other.stayHotTickLimit;</span>
+        // No need to refresh cyclesAfterBrewStopped because this information is not important in a
+        // bus message. It's an internal-only value.
+<span class="fc" id="L68">    }</span>
+
+    @Override
+    public void reset() {
+<span class="fc" id="L72">        this.hasPot = true;</span>
+<span class="fc" id="L73">        this.isHot = false;</span>
+<span class="fc" id="L74">    }</span>
+
+    public void removePot() {
+<span class="fc" id="L77">        hasPot = false;</span>
+<span class="fc" id="L78">    }</span>
+
+    public void replacePot() {
+<span class="fc" id="L81">        hasPot = true;</span>
+<span class="fc" id="L82">    }</span>
+
+    public boolean isHot() {
+<span class="fc" id="L85">        return isHot;</span>
+    }
+
+    public boolean hasPot() {
+<span class="fc" id="L89">        return hasPot;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

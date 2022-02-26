@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CoffeeMaker.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Coffee Maker</a> &gt; <a href="index.source.html" class="el_package">roofing.coffee.maker</a> &gt; <span class="el_source">CoffeeMaker.java</span></div><h1>CoffeeMaker.java</h1><pre class="source lang-java linenums">package roofing.coffee.maker;
+
+import roofing.coffee.maker.busses.BusMessage;
+import roofing.coffee.maker.components.BrewButton;
+import roofing.coffee.maker.components.CoffeePot;
+import roofing.coffee.maker.components.WarmerPlate;
+import roofing.coffee.maker.components.WaterReservoir;
+
+public class CoffeeMaker {
+
+    private final WaterReservoir reservoir;
+    private final BrewButton button;
+    private final CoffeePot pot;
+    private final WarmerPlate warmer;
+
+<span class="fc" id="L16">    CoffeeMaker(WaterReservoir reservoir, BrewButton button, CoffeePot pot, WarmerPlate warmer) {</span>
+<span class="fc" id="L17">        this.reservoir = reservoir;</span>
+<span class="fc" id="L18">        this.button = button;</span>
+<span class="fc" id="L19">        this.pot = pot;</span>
+<span class="fc" id="L20">        this.warmer = warmer;</span>
+<span class="fc" id="L21">    }</span>
+
+    public int getMaxWaterCapacityCups() {
+<span class="fc" id="L24">        return reservoir.maxCapacityCups();</span>
+    }
+
+    public void fill(int cupsOfwater) {
+<span class="fc" id="L28">        reservoir.fill(cupsOfwater);</span>
+<span class="fc" id="L29">    }</span>
+
+    public void pressBrewButton() {
+<span class="fc" id="L32">        button.pressBrewButton();</span>
+<span class="fc" id="L33">    }</span>
+
+    public int cupsOfWater() {
+<span class="fc" id="L36">        return reservoir.cupsOfWater();</span>
+    }
+
+    public int cupsOfCoffee() {
+<span class="fc" id="L40">        return pot.cupsOfCoffee();</span>
+    }
+
+    public boolean isWarmerPlateOn() {
+<span class="fc" id="L44">        return warmer.isHot();</span>
+    }
+
+    public boolean isBrewing() {
+<span class="fc" id="L48">        return reservoir.isBrewing();</span>
+    }
+
+    public CoffeePot removePot() {
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (warmer.hasPot()) {</span>
+<span class="fc" id="L53">            warmer.removePot();</span>
+<span class="fc" id="L54">            return pot;</span>
+        }
+
+<span class="fc" id="L57">        throw new IllegalStateException(</span>
+                &quot;The coffee pot has been removed previously without replacement. Please replace &quot;
+                        + &quot;the pot via replacePot() before removing again.&quot;);
+    }
+
+    public void replacePot() {
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (!warmer.hasPot()) {</span>
+<span class="fc" id="L64">            warmer.replacePot();</span>
+
+        } else {
+<span class="fc" id="L67">            throw new IllegalStateException(</span>
+                    &quot;The coffee pot is currently on the warmer plate. Cannot replace a pot that &quot;
+                            + &quot;is already present! Please remove the pot first via removePot().&quot;);
+        }
+<span class="fc" id="L71">    }</span>
+
+    public BusMessage asBusMessage() {
+<span class="fc" id="L74">        return BusMessage.builder()</span>
+<span class="fc" id="L75">                .withBrewButton(button)</span>
+<span class="fc" id="L76">                .withCoffeePot(pot)</span>
+<span class="fc" id="L77">                .withWarmerPlate(warmer)</span>
+<span class="fc" id="L78">                .withWaterReservoir(reservoir)</span>
+<span class="fc" id="L79">                .build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
