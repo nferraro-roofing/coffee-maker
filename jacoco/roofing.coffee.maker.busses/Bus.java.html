@@ -3,20 +3,22 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import lombok.ToString;
 
+<span class="fc" id="L8">@ToString</span>
 public class Bus {
 
     // We expect four ClockedComponents: CoffeeMakerUI, CoffeePot, WarmerPlate, and WaterReservoir
-<span class="fc" id="L10">    private final List&lt;BusComponent&lt;?&gt;&gt; synchedComponents = new ArrayList&lt;&gt;(4);</span>
+<span class="fc" id="L12">    private final List&lt;BusComponent&lt;?&gt;&gt; synchedComponents = new ArrayList&lt;&gt;(4);</span>
 
-<span class="fc" id="L12">    public Bus(BusComponent&lt;?&gt;... components) {</span>
-<span class="fc" id="L13">        synchedComponents.addAll(Arrays.asList(components));</span>
-<span class="fc" id="L14">    }</span>
+<span class="fc" id="L14">    public Bus(BusComponent&lt;?&gt;... components) {</span>
+<span class="fc" id="L15">        synchedComponents.addAll(Arrays.asList(components));</span>
+<span class="fc" id="L16">    }</span>
 
     public void update(BusMessage message) {
-<span class="fc bfc" id="L17" title="All 2 branches covered.">        for (BusComponent&lt;?&gt; c : synchedComponents) {</span>
-<span class="fc" id="L18">            c.readBusMessage(message);</span>
-<span class="fc" id="L19">        }</span>
-<span class="fc" id="L20">    }</span>
+<span class="fc bfc" id="L19" title="All 2 branches covered.">        for (BusComponent&lt;?&gt; c : synchedComponents) {</span>
+<span class="fc" id="L20">            c.readBusMessage(message);</span>
+<span class="fc" id="L21">        }</span>
+<span class="fc" id="L22">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

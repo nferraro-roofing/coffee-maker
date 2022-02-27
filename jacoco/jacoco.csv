@@ -1,8 +1,8 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-Coffee Maker,roofing.coffee.maker.busses,Clock,0,60,0,4,0,10,0,7,0,5
-Coffee Maker,roofing.coffee.maker.busses,Bus,0,31,0,2,0,8,0,3,0,2
-Coffee Maker,roofing.coffee.maker.busses,BusMessage,27,36,0,0,1,8,1,7,1,7
-Coffee Maker,roofing.coffee.maker.busses,Clock.ClockBuilder,10,42,2,2,0,1,2,5,0,5
+Coffee Maker,roofing.coffee.maker.busses,Clock,0,60,0,4,0,9,0,7,0,5
+Coffee Maker,roofing.coffee.maker.busses,Bus,0,43,0,2,0,9,0,4,0,3
+Coffee Maker,roofing.coffee.maker.busses,BusMessage,0,63,0,0,0,9,0,8,0,8
+Coffee Maker,roofing.coffee.maker.busses,Clock.ClockBuilder,0,52,0,4,0,1,0,7,0,5
 Coffee Maker,roofing.coffee.maker.busses,BusMessage.BusMessageBuilder,0,138,0,8,0,41,0,12,0,8
 Coffee Maker,roofing.coffee.maker.plugins.properties,CoffeeMakerProperties.ClockProps,0,85,0,6,0,18,0,8,0,5
 Coffee Maker,roofing.coffee.maker.plugins.properties,CoffeeMakerProperties.ReservoirProps,0,18,0,0,0,2,0,2,0,2
@@ -13,9 +13,9 @@ Coffee Maker,roofing.coffee.maker.plugins.properties,InvalidClockTicksPerMinuteE
 Coffee Maker,roofing.coffee.maker.plugins.properties,CoffeeMakerProperties,0,110,0,8,0,7,0,11,0,7
 Coffee Maker,roofing.coffee.maker.plugins.properties,CoffeeMakerProperties.WarmerPlateProps,0,18,0,0,0,2,0,2,0,2
 Coffee Maker,roofing.coffee.maker,CoffeeMakerCreator,0,92,0,0,0,20,0,3,0,3
-Coffee Maker,roofing.coffee.maker,CoffeeMaker,0,88,0,4,0,29,0,13,0,11
-Coffee Maker,roofing.coffee.maker.components,BrewButton,12,75,0,12,1,19,1,14,1,8
+Coffee Maker,roofing.coffee.maker,CoffeeMaker,0,115,0,4,0,30,0,14,0,12
+Coffee Maker,roofing.coffee.maker.components,BrewButton,0,87,0,12,0,20,0,15,0,9
 Coffee Maker,roofing.coffee.maker.components,BrewButton.BrewRequestState,0,34,0,0,0,2,0,1,0,1
-Coffee Maker,roofing.coffee.maker.components,WarmerPlate,27,119,0,8,1,34,1,15,1,11
-Coffee Maker,roofing.coffee.maker.components,CoffeePot,27,143,1,11,1,40,2,15,1,10
-Coffee Maker,roofing.coffee.maker.components,WaterReservoir,32,192,1,17,1,50,2,20,1,12
+Coffee Maker,roofing.coffee.maker.components,WarmerPlate,0,146,0,8,0,35,0,16,0,12
+Coffee Maker,roofing.coffee.maker.components,CoffeePot,0,170,1,11,0,41,1,16,0,11
+Coffee Maker,roofing.coffee.maker.components,WaterReservoir,0,224,1,17,0,51,1,21,0,13

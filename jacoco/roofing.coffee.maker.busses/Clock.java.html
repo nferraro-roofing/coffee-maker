@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.NonNull;
 import roofing.coffee.maker.CoffeeMaker;
 
-<span class="pc bpc" id="L11" title="2 of 8 branches missed.">@Builder</span>
+<span class="fc bfc" id="L11" title="All 8 branches covered.">@Builder</span>
 public class Clock {
 
 <span class="fc" id="L14">    private static final Logger LOG = LoggerFactory.getLogger(Clock.class);</span>
@@ -22,14 +22,13 @@ public class Clock {
     public void start(long period, TimeUnit periodUnit) {
 <span class="fc" id="L23">        LOG.debug(&quot;Clock starting with period {} and unit {}&quot;, period, periodUnit);</span>
 
-<span class="fc" id="L25">        Executors.newScheduledThreadPool(1)</span>
-<span class="fc" id="L26">                .scheduleAtFixedRate(this::tick, 0, period, periodUnit);</span>
-<span class="fc" id="L27">    }</span>
+<span class="fc" id="L25">        Executors.newScheduledThreadPool(1).scheduleAtFixedRate(this::tick, 0, period, periodUnit);</span>
+<span class="fc" id="L26">    }</span>
 
     public void tick() {
-<span class="fc" id="L30">        BusMessage message = coffeeMaker.asBusMessage();</span>
-<span class="fc" id="L31">        LOG.trace(&quot;Clock ticking. Sending message to bus: {}&quot;, message);</span>
-<span class="fc" id="L32">        bus.update(message);</span>
-<span class="fc" id="L33">    }</span>
+<span class="fc" id="L29">        BusMessage message = coffeeMaker.asBusMessage();</span>
+<span class="fc" id="L30">        LOG.trace(&quot;Clock ticking. Sending message to bus: {}&quot;, message);</span>
+<span class="fc" id="L31">        bus.update(message);</span>
+<span class="fc" id="L32">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
