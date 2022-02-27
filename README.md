@@ -1,4 +1,4 @@
-[![publish-on-release](https://github.com/nferraro-roofing/coffee-maker/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/nferraro-roofing/coffee-maker/actions/workflows/maven-publish.yml) [![GitHub release (latest by date)](https://img.shields.io/github/v/release/nferraro-roofing/coffee-maker)](https://github.com/nferraro-roofing/coffee-maker/releases)
+[![publish-on-release](https://github.com/nferraro-roofing/coffee-maker/actions/workflows/publish-on-release.yml/badge.svg)](https://github.com/nferraro-roofing/coffee-maker/actions/workflows/publish-on-release.yml) [![GitHub release (latest by date)](https://img.shields.io/github/v/release/nferraro-roofing/coffee-maker)](https://github.com/nferraro-roofing/coffee-maker/releases)
 
 Simple coffee maker implementation
     
