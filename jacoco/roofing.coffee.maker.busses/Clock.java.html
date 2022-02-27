@@ -20,10 +20,10 @@ public class Clock {
     private final CoffeeMaker coffeeMaker;
 
     public void start(long period, TimeUnit periodUnit) {
-<span class="fc" id="L23">        LOG.debug(&quot;Clock starting with period {} and unit {}&quot;, period, periodUnit);</span>
+<span class="nc" id="L23">        LOG.debug(&quot;Clock starting with period {} and unit {}&quot;, period, periodUnit);</span>
 
-<span class="fc" id="L25">        Executors.newScheduledThreadPool(1).scheduleAtFixedRate(this::tick, 0, period, periodUnit);</span>
-<span class="fc" id="L26">    }</span>
+<span class="nc" id="L25">        Executors.newScheduledThreadPool(1).scheduleAtFixedRate(this::tick, 0, period, periodUnit);</span>
+<span class="nc" id="L26">    }</span>
 
     public void tick() {
 <span class="fc" id="L29">        BusMessage message = coffeeMaker.asBusMessage();</span>

@@ -1,5 +1,5 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-Coffee Maker,roofing.coffee.maker.busses,Clock,0,60,0,4,0,9,0,7,0,5
+Coffee Maker,roofing.coffee.maker.busses,Clock,16,44,0,4,3,6,1,6,1,4
 Coffee Maker,roofing.coffee.maker.busses,Bus,0,43,0,2,0,9,0,4,0,3
 Coffee Maker,roofing.coffee.maker.busses,BusMessage,0,63,0,0,0,9,0,8,0,8
 Coffee Maker,roofing.coffee.maker.busses,Clock.ClockBuilder,0,52,0,4,0,1,0,7,0,5
@@ -12,7 +12,7 @@ Coffee Maker,roofing.coffee.maker.plugins.properties,CoffeeMakerProperties.PotPr
 Coffee Maker,roofing.coffee.maker.plugins.properties,InvalidClockTicksPerMinuteException,0,16,0,0,0,2,0,1,0,1
 Coffee Maker,roofing.coffee.maker.plugins.properties,CoffeeMakerProperties,0,110,0,8,0,7,0,11,0,7
 Coffee Maker,roofing.coffee.maker.plugins.properties,CoffeeMakerProperties.WarmerPlateProps,0,18,0,0,0,2,0,2,0,2
-Coffee Maker,roofing.coffee.maker,CoffeeMakerCreator,0,92,0,0,0,20,0,3,0,3
+Coffee Maker,roofing.coffee.maker,CoffeeMakerCreator,19,73,0,0,6,14,1,2,1,2
 Coffee Maker,roofing.coffee.maker,CoffeeMaker,0,115,0,4,0,30,0,14,0,12
 Coffee Maker,roofing.coffee.maker.components,BrewButton,0,87,0,12,0,20,0,15,0,9
 Coffee Maker,roofing.coffee.maker.components,BrewButton.BrewRequestState,0,34,0,0,0,2,0,1,0,1
