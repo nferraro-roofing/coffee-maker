@@ -113,6 +113,38 @@ class CoffeeMakerPropertiesTest {
         assertTrue(true);
     }
     
+    /**
+     * Ensure that the messaging of {@code toString()) is appropriate for a logging message.
+     * 
+     * It may seem odd to unit test {@code toString()), as it implements has no real logic. However,
+     * {@code toString()) may come into play during logging time. We want to ensure that any 
+     * downstream tools (or even just developer / production support eyes) that hook into our 
+     * enjoy a consistent experience.
+     * 
+     * This may be overkill, though.
+     * 
+     */
+    @Test
+    void testToString() {
+        // Given
+        ClockProps clock = new ClockProps(60L, TimeUnit.SECONDS);
+        PotProps pot = new PotProps(10);
+        ReservoirProps reservoir = new ReservoirProps(1);
+        WarmerPlateProps warmerPlate = new WarmerPlateProps(10);
+
+        // When
+        CoffeeMakerProperties subject =
+                new CoffeeMakerProperties(clock, pot, reservoir, warmerPlate);
+
+        // When
+        String actual = subject.toString();
+
+        // Then
+        assertEquals(
+                "CoffeeMakerProperties(clock=CoffeeMakerProperties.ClockProps(tickDelay=60, delayUnit=SECONDS, ticksPerMinute=1), pot=CoffeeMakerProperties.PotProps(maxCapacityCups=10), reservoir=CoffeeMakerProperties.ReservoirProps(cupsPerMinuteBrewRate=1), warmerPlate=CoffeeMakerProperties.WarmerPlateProps(stayHotDurationMinutes=10), getReservoirTicksPerCupBrewed=1, getWarmerPlateStayHotForTickLimit=10)",
+                actual);
+    }
+
     static Stream<Arguments> provideNullProperties() {
         return Stream.of(
                 Arguments.of(

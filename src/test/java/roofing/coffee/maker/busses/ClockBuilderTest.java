@@ -3,6 +3,7 @@ package roofing.coffee.maker.busses;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import roofing.coffee.maker.CoffeeMaker;
@@ -50,4 +51,15 @@ class ClockBuilderTest {
         assertThrows(NullPointerException.class, () -> subject.build());
     }
 
+    @Test
+    void testNullBus() {
+        ClockBuilder subject = Clock.builder();
+        assertThrows(NullPointerException.class, () -> subject.bus(null));
+    }
+
+    @Test
+    void testNullCoffeeMaker() {
+        ClockBuilder subject = Clock.builder();
+        assertThrows(NullPointerException.class, () -> subject.coffeeMaker(null));
+    }
 }
