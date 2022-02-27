@@ -1,9 +1,10 @@
-[![build-and-publish](https://github.com/nferraro-roofing/coffee-maker/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/nferraro-roofing/coffee-maker/actions/workflows/maven-publish.yml) [![GitHub release (latest by date)](https://img.shields.io/github/v/release/nferraro-roofing/coffee-maker)](https://github.com/nferraro-roofing/coffee-maker/releases)
+[![publish-on-release](https://github.com/nferraro-roofing/coffee-maker/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/nferraro-roofing/coffee-maker/actions/workflows/maven-publish.yml) [![GitHub release (latest by date)](https://img.shields.io/github/v/release/nferraro-roofing/coffee-maker)](https://github.com/nferraro-roofing/coffee-maker/releases)
 
 Simple coffee maker implementation
     
 # TODO - coffee maker proper
 * Change auto-build strategy: publish site only on release. regular build otherwise
+    * test site publish w/ test release
 * Complete javadocs
 * Complete site.xml
 * Complete readme
@@ -28,6 +29,7 @@ Simple coffee maker implementation
             * More granular brew rate than whole cups
             * never added the concept of a coffee ground holder
             * Sonar lint as part of build
+            * Fortify build via manven-release-plugin: https://maven.apache.org/maven-release/maven-release-plugin/
         * CoffeePot, WarmerPlate, WaterReservoir's settings are not final due to the bus message thing
         * Add maven-checkstyle-plugin, bug configure it to match my preferences. The idea is that others should be able to contribute without violating style checks
 * Tag as version 1 & release officially via github

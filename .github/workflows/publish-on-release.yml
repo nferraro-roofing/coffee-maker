@@ -1,15 +1,14 @@
-# This workflow will build a package using Maven and then publish it to GitHub packages when code is pushed to branch 'main'
-# Then, it will also build the site contents and publish those to the gh-pages branch.
+# Upon release creation, this workflow will build & publish the Coffee Maker 
+# jar, sources, and javadoc. Finally, it will build & publish the site. 
 
-name: Maven Build & Publish
+name: Maven Publish on Release
 
 on:
-  push:
-    branches:    
-      - 'main'
+  release:
+    types: [created]
 
 jobs:
-  build-and-publish:
+  publish-on-release:
 
     runs-on: ubuntu-latest
     permissions:
