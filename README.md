@@ -3,9 +3,8 @@
 Simple coffee maker implementation
     
 # TODO - coffee maker proper
-* Change auto-build strategy: publish site only on release. regular build otherwise
-    * test site publish w/ test release
 * Complete javadocs
+    * Clear out maven warnings
 * Complete site.xml
 * Complete readme
     * The low-memory, anit-GC approach with the BusMessage, builder, and BusComponent
@@ -32,6 +31,8 @@ Simple coffee maker implementation
             * Fortify build via manven-release-plugin: https://maven.apache.org/maven-release/maven-release-plugin/
         * CoffeePot, WarmerPlate, WaterReservoir's settings are not final due to the bus message thing
         * Add maven-checkstyle-plugin, bug configure it to match my preferences. The idea is that others should be able to contribute without violating style checks
+        * defaults on various settings such as ClockProps
+    * potential issues: see BusMessageBuilder docs. Race conditions exist from re-using instances on the bus.
 * Tag as version 1 & release officially via github
 
 # The Mark IV Special Coffee Maker [Problem statement - taken from Uncle Bob's [article] (http://objectmentor.com/resources/articles/CoffeeMaker.pdf)]

@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.ClockProps;
 import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.PotProps;
 import roofing.coffee.maker.plugins.properties.CoffeeMakerProperties.ReservoirProps;
@@ -143,6 +144,24 @@ class CoffeeMakerPropertiesTest {
         assertEquals(
                 "CoffeeMakerProperties(clock=CoffeeMakerProperties.ClockProps(tickDelay=60, delayUnit=SECONDS, ticksPerMinute=1), pot=CoffeeMakerProperties.PotProps(maxCapacityCups=10), reservoir=CoffeeMakerProperties.ReservoirProps(cupsPerMinuteBrewRate=1), warmerPlate=CoffeeMakerProperties.WarmerPlateProps(stayHotDurationMinutes=10), getReservoirTicksPerCupBrewed=1, getWarmerPlateStayHotForTickLimit=10)",
                 actual);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {-1, 0})
+    void testInvalidPotPropsMaxCapacity(int invalidMaxCapacity) {
+        assertThrows(IllegalArgumentException.class, () -> new PotProps(invalidMaxCapacity));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {-1, 0})
+    void testInvalidReservoirProps(int cupsPerMinuteBrewRate) {
+        assertThrows(IllegalArgumentException.class, () -> new PotProps(cupsPerMinuteBrewRate));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {-1, 0})
+    void testInvalidWarmerPlateProps(int stayHotDurationMinutes) {
+        assertThrows(IllegalArgumentException.class, () -> new PotProps(stayHotDurationMinutes));
     }
 
     static Stream<Arguments> provideNullProperties() {
